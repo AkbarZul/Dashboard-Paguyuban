@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SidebarContext from "./sidebarContext";
 
-export const SidebarProvider = ({
+const SidebarProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -22,3 +22,5 @@ export const SidebarProvider = ({
     </SidebarContext.Provider>
   );
 };
+
+export default SidebarProvider

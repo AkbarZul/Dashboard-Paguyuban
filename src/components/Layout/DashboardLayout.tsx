@@ -1,4 +1,4 @@
-import { useSidebar } from "@/contexts/SidebarContext/useSidebar";
+import { useSidebar } from "@/contexts/SidebarContext";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 import { Outlet } from "react-router";

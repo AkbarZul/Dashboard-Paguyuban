@@ -1,4 +1,4 @@
-import { SidebarProvider } from "@/contexts/SidebarContext/SidebarProvider";
+import { SidebarProvider } from "@/contexts/SidebarContext";
 import Routing from "./routing";
 
 function App() {
