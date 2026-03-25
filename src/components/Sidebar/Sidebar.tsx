@@ -2,20 +2,15 @@ import { Home, LogOut, X } from "lucide-react";
 
 import { allMenus } from "@/constans/sidebar";
 import { DefaultUser } from "@/assets/png";
-
-interface Props {
-  isMobileMenuOpen: boolean;
-  setIsMobileMenuOpen: (val: boolean) => void;
-  activeMenu: string;
-  setActiveMenu: (val: string) => void;
-}
+import { SidebarProps } from "./types";
+import Button from "@/components/Button";
 
 const Sidebar = ({
   isMobileMenuOpen,
   setIsMobileMenuOpen,
   activeMenu,
   setActiveMenu,
-}: Props) => {
+}: SidebarProps) => {
   return (
     <>
       {isMobileMenuOpen && (
@@ -63,7 +58,7 @@ const Sidebar = ({
                     const isActive = activeMenu === item.key;
 
                     return (
-                      <button
+                      <Button
                         key={item.key}
                         onClick={() => setActiveMenu(item.key)}
                         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${
@@ -74,7 +69,7 @@ const Sidebar = ({
                       >
                         {item.icon}
                         <span className="font-medium">{item.label}</span>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -97,9 +92,9 @@ const Sidebar = ({
               </p>
               <p className="text-xs text-slate-400 truncate">Ketua RT 01</p>
             </div>
-            <button className="text-slate-400 hover:text-rose-400 transition-colors">
+            <Button className="text-slate-400 hover:text-rose-400 transition-colors">
               <LogOut className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         </div>
       </aside>

@@ -1,10 +1,8 @@
 import { Menu, PlusCircle, Search } from "lucide-react";
+import { HeaderProps } from "./types";
+import Button from "@/components/Button";
 
-interface Props {
-  onOpenMenu: () => void;
-}
-
-const Header = ({ onOpenMenu }: Props) => {
+const Header = ({ onOpenMenu }: HeaderProps) => {
   return (
     <header className="h-16 bg-white border-b flex items-center justify-between px-4">
       <span className="text-slate-900 font-bold text-md tracking-wide md:hidden">
@@ -21,15 +19,15 @@ const Header = ({ onOpenMenu }: Props) => {
       </div>
 
       <div className="hidden sm:flex items-center gap-4 ml-auto">
-        <button className="bg-slate-100 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+        <Button className="bg-slate-100 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
           <PlusCircle className="w-5 h-5" />
           <span className="hidden sm:inline">Catat Pemasukan</span>
-        </button>
+        </Button>
       </div>
 
-      <button className="md:hidden" onClick={onOpenMenu}>
+      <Button className="md:hidden" onClick={onOpenMenu}>
         <Menu className="w-6 h-6" />
-      </button>
+      </Button>
     </header>
   );
 };
