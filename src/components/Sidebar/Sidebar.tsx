@@ -4,6 +4,7 @@ import { allMenus } from "@/constans/sidebar";
 import { DefaultUser } from "@/assets/png";
 import { SidebarProps } from "./types";
 import Button from "@/components/Button";
+import { useNavigate } from "react-router";
 
 const Sidebar = ({
   isMobileMenuOpen,
@@ -11,6 +12,11 @@ const Sidebar = ({
   activeMenu,
   setActiveMenu,
 }: SidebarProps) => {
+  const navigate = useNavigate();
+  const handleClick = (key: string, path: string) => {
+    setActiveMenu(key);
+    navigate(path);
+  };
   return (
     <>
       {isMobileMenuOpen && (
@@ -60,10 +66,10 @@ const Sidebar = ({
                     return (
                       <Button
                         key={item.key}
-                        onClick={() => setActiveMenu(item.key)}
+                        onClick={() => handleClick(item.key, item.path)}
                         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${
                           isActive
-                            ? "bg-brand-600 text-white"
+                            ? "bg-slate-800 text-white"
                             : "hover:bg-slate-800 hover:text-white"
                         }`}
                       >

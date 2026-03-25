@@ -1,10 +1,11 @@
-import { DashboardLayout } from "@/components/Layout";
+import { SidebarProvider } from "@/contexts/SidebarContext/SidebarProvider";
+import Routing from "./routing";
 
 function App() {
   return (
-    <div className="bg-slate-50 text-slate-800 font-sans h-screen overflow-hidden w-full">
-      <DashboardLayout />
-    </div>
+    <SidebarProvider>
+      <Routing />
+    </SidebarProvider>
   );
 }
 

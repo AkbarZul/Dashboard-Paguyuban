@@ -6,9 +6,11 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
+import * as PATH from "./routePaths";
 interface IMenuItemChildren {
   label: string;
   key: string;
+  path?: string;
   icon: React.ReactNode;
 }
 export interface IMenuItem {
@@ -23,6 +25,7 @@ export const allMenus: IMenuItem[] = [
         key: "dashboard",
         label: "Dashboard",
         icon: <LayoutDashboard className="w-5 h-5" />,
+        path: PATH.DASHBOARD,
       },
       {
         key: "data",
@@ -37,6 +40,7 @@ export const allMenus: IMenuItem[] = [
         icon: (
           <Wallet className="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-colors" />
         ),
+        path: PATH.IURAN,
       },
       {
         key: "pengeluaran",
