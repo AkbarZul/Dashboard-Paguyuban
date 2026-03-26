@@ -1,3 +1,8 @@
+import { ReactNode } from "react";
+
 export interface HeaderProps {
-  onOpenMenu: () => void;
+  title: string;
+  subTitle?: string;
+  actionButton?: ReactNode;
+  className?: string
 }

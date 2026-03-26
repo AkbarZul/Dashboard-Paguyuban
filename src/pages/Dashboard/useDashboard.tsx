@@ -1,5 +1,7 @@
+import { Column } from "@/components/Table/types";
 import { renderStatusBadge } from "@/helpers/chipColor";
 import { AlertCircle, Home, Landmark, TrendingUp, Wallet } from "lucide-react";
+import { Transaction } from "./types";
 const useDashboard = () => {
   const cardData = [
     {
@@ -77,7 +79,7 @@ const useDashboard = () => {
     },
   ];
 
-  const transactions = [
+  const transactions: Transaction[] = [
     {
       id: 1,
       date: "24 Okt 2023",
@@ -135,58 +137,56 @@ const useDashboard = () => {
     },
   ];
 
-  const columnConfig = [
-  {
-    header: "Tanggal",
-    accessor: "date",
-  },
-  {
-    header: "Nama Warga / Keterangan",
-    render: (trx) => (
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
-            trx.type === "in"
-              ? "bg-emerald-100 text-emerald-600"
-              : "bg-rose-100 text-rose-600"
-          }`}
-        >
-          {trx.initials}
+  const columnConfig: Column<Transaction>[] = [
+    {
+      header: "Tanggal",
+      accessor: "date",
+    },
+    {
+      header: "Nama Warga / Keterangan",
+      render: (trx) => (
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
+              trx.type === "in"
+                ? "bg-emerald-100 text-emerald-600"
+                : "bg-rose-100 text-rose-600"
+            }`}
+          >
+            {trx.initials}
+          </div>
+          {trx.name}
         </div>
-        {trx.name}
-      </div>
-    ),
-  },
-  {
-    header: "Blok / No",
-    accessor: "block",
-  },
-  {
-    header: "Kategori",
-    accessor: "category",
-  },
-  {
-    header: "Nominal",
-    render: (trx) => (
-      <span
-        className={
-          trx.type === "in" ? "text-emerald-600" : "text-rose-600"
-        }
-      >
-        {trx.amount}
-      </span>
-    ),
-  },
-  {
-    header: "Status",
-    render: (trx) => renderStatusBadge(trx.status),
-  },
-];
+      ),
+    },
+    {
+      header: "Blok / No",
+      accessor: "block",
+    },
+    {
+      header: "Kategori",
+      accessor: "category",
+    },
+    {
+      header: "Nominal",
+      render: (trx) => (
+        <span
+          className={trx.type === "in" ? "text-emerald-600" : "text-rose-600"}
+        >
+          {trx.amount}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      render: (trx) => renderStatusBadge(trx.status),
+    },
+  ];
 
   return {
     cardData,
     transactions,
-    columnConfig
+    columnConfig,
   };
 };
 

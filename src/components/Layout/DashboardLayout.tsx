@@ -1,8 +1,8 @@
 import { useSidebar } from "@/contexts/SidebarContext";
-import Header from "../Header";
 import Sidebar from "../Sidebar";
 import { Outlet } from "react-router";
 import Footer from "../Footer";
+import TopBarMenu from "../TopBarMenu";
 
 const DashboardLayout = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen, activeMenu, setActiveMenu } =
@@ -18,7 +18,7 @@ const DashboardLayout = () => {
         />
 
         <div className="flex-1 flex flex-col">
-          <Header onOpenMenu={() => setIsMobileMenuOpen(true)} />
+          <TopBarMenu onOpenMenu={() => setIsMobileMenuOpen(true)} />
 
           <main className="flex-1 p-6 overflow-auto">
             <Outlet />

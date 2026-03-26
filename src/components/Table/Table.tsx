@@ -1,16 +1,6 @@
 import { ReactNode } from "react";
-
-export interface Column<T> {
-  header: string;
-  accessor?: keyof T;
-  render?: (row: T) => ReactNode;
-  className?: string;
-}
-
-interface TableProps<T> {
-  columns: Column<T>[];
-  data: T[];
-}
+import { TableProps } from "./types";
+import Pagination from "./Pagination";
 
 function Table<T>({ columns, data }: TableProps<T>) {
   return (
@@ -45,6 +35,7 @@ function Table<T>({ columns, data }: TableProps<T>) {
             ))}
           </tbody>
         </table>
+        <Pagination />
       </div>
 
       {/* Mobile (Card style) */}

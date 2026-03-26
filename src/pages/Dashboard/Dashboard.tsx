@@ -1,20 +1,34 @@
 import Card from "@/components/Card";
 import useDashboard from "./useDashboard";
-import { ArrowRight } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import Table from "@/components/Table";
+import Header from "@/components/Header";
+import Button from "@/components/Button";
+import TableFilterLayout from "@/features/TableFilterLayout";
+import SearchBar from "@/components/SearchBar";
+import Select from "@/components/Select";
+import { filterListStatus } from "@/constans/masterdata";
+import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 
 const Dashboard = () => {
   const { cardData, transactions, columnConfig } = useDashboard();
   return (
     <div className="flex-1 p-4 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-800">
-          Ringkasan Kas Paguyuban Kav BRI
-        </h1>
-        <p className="text-slate-500 mt-1">
-          Pantau kondisi keuangan dan partisipasi iuran warga bulan ini.
-        </p>
-      </div>
+      {/* Header Halaman */}
+      <Header
+        title="Ringkasan Kas Paguyuban Kav BRI"
+        subTitle="Pantau kondisi keuangan dan partisipasi iuran warga bulan ini."
+        actionButton={
+          <div>
+            <div className="hidden sm:flex items-center gap-4 ml-auto">
+              <Button className="bg-white hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+                <PlusCircle className="w-5 h-5" />
+                <span className="hidden sm:inline">Catat Pemasukan</span>
+              </Button>
+            </div>
+          </div>
+        }
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {cardData.map((item, index) => (
           <Card
@@ -27,18 +41,19 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden  mb-8">
-        <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-slate-800">
-            Transaksi Terakhir
-          </h2>
-          <a
-            href="#"
-            className="text-brand-600 hover:text-brand-700 text-sm font-medium flex items-center"
-          >
-            Lihat Semua <ArrowRight className="ml-1 w-4 h-4" />
-          </a>
-        </div>
+      {/* Filter Bar */}
+      <TableFilterLayout>
+        <SearchBar placeholder="Cari nama warga, blok, atau transaksi..." />
+        <Select
+          layoutClassname="border border-slate-200 bg-slate-50 rounded-lg text-sm text-slate-700 py-2 px-3 outline-none cursor-pointer focus:border-brand-500"
+          list={filterListStatus}
+        />
+      </TableFilterLayout>
+
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+        <TransactionHeader />
+
+        {/* Table */}
         <div className="p-4 md:p-0">
           <Table columns={columnConfig} data={transactions} />
         </div>
