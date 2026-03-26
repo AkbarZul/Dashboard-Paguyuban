@@ -2,6 +2,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 import { Outlet } from "react-router";
+import Footer from "../Footer";
 
 const DashboardLayout = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen, activeMenu, setActiveMenu } =
@@ -22,6 +23,7 @@ const DashboardLayout = () => {
           <main className="flex-1 p-6 overflow-auto">
             <Outlet />
           </main>
+          <Footer />
         </div>
       </div>
     </div>

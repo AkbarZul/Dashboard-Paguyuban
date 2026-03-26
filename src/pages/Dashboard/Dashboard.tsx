@@ -1,9 +1,10 @@
 import Card from "@/components/Card";
 import useDashboard from "./useDashboard";
 import { ArrowRight } from "lucide-react";
+import Table from "@/components/Table";
 
 const Dashboard = () => {
-  const { cardData, transactions, renderStatusBadge } = useDashboard();
+  const { cardData, transactions, columnConfig } = useDashboard();
   return (
     <div className="flex-1 p-4 lg:p-8">
       <div className="mb-8">
@@ -38,57 +39,8 @@ const Dashboard = () => {
             Lihat Semua <ArrowRight className="ml-1 w-4 h-4" />
           </a>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left text-slate-600">
-            <thead className="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Tanggal
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Nama Warga / Keterangan
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Blok / No
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Kategori
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Nominal
-                </th>
-                <th scope="col" className="px-6 py-4 font-medium">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {transactions.map((trx) => (
-                <tr
-                  key={trx.id}
-                  className="hover:bg-slate-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">{trx.date}</td>
-                  <td className="px-6 py-4 font-medium text-slate-800 flex items-center gap-3">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${trx.type === "in" ? "bg-brand-100 text-brand-600" : "bg-rose-100 text-rose-600"}`}
-                    >
-                      {trx.initials}
-                    </div>
-                    {trx.name}
-                  </td>
-                  <td className="px-6 py-4 text-slate-500">{trx.block}</td>
-                  <td className="px-6 py-4">{trx.category}</td>
-                  <td
-                    className={`px-6 py-4 font-medium ${trx.type === "in" ? "text-emerald-600" : "text-rose-600"}`}
-                  >
-                    {trx.amount}
-                  </td>
-                  <td className="px-6 py-4">{renderStatusBadge(trx.status)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="p-4 md:p-0">
+          <Table columns={columnConfig} data={transactions} />
         </div>
       </div>
     </div>
