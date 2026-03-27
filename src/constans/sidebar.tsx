@@ -49,6 +49,7 @@ export const allMenus: IMenuItem[] = [
         icon: (
           <Receipt className="w-5 h-5 text-slate-400 group-hover:text-rose-400 transition-colors" />
         ),
+        path: PATH.PENGELUARAN_KAS,
       },
     ],
   },
