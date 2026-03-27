@@ -8,6 +8,7 @@ const useIuran = () => {
     {
       id: 101,
       name: "Ahmad Subarjo",
+      initials: "AS",
       block: "Blok A / 12",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -18,6 +19,7 @@ const useIuran = () => {
     {
       id: 102,
       name: "Siti Maimunah",
+      initials: "SM",
       block: "Blok B / 04",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -28,6 +30,7 @@ const useIuran = () => {
     {
       id: 103,
       name: "Budi Santoso",
+      initials: "BS",
       block: "Blok A / 01",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -38,6 +41,7 @@ const useIuran = () => {
     {
       id: 104,
       name: "Dedi Rahman",
+      initials: "DR",
       block: "Blok C / 10",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -48,6 +52,7 @@ const useIuran = () => {
     {
       id: 105,
       name: "Eka Putra",
+      initials: "EP",
       block: "Blok B / 09",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -58,6 +63,7 @@ const useIuran = () => {
     {
       id: 106,
       name: "Fajar Hidayat",
+      initials: "FH",
       block: "Blok C / 02",
       period: "Oktober 2023",
       amount: "Rp 50.000",
@@ -70,7 +76,14 @@ const useIuran = () => {
   const columnConfig: Column<Pemasukan>[] = [
     {
       header: "Nama Warga",
-      accessor: "name",
+      render: (item) => (
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-200 text-slate-700">
+            {item.initials}
+          </div>
+          {item.name}
+        </div>
+      ),
     },
     {
       header: "Blok / No",
