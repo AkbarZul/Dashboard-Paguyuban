@@ -33,7 +33,7 @@ const usePengeluaranKas = () => {
     {
       id: 304,
       date: "10 Okt 2023",
-      description: "Konsumsi Rapat Pengurus RT",
+      description: "Konsumsi Rapat Pengurus Paguyuban",
       category: "Konsumsi",
       recipient: "Warung Bu Ani",
       amount: "Rp 200.000",
