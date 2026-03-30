@@ -37,6 +37,7 @@ const Dashboard = () => {
             value={item.value}
             icon={item.icon}
             summary={item.summary}
+            layoutClassname="bg-white border-slate-200"
           />
         ))}
       </div>

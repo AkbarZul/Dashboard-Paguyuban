@@ -1,11 +1,21 @@
 import Button from "@/components/Button";
+import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Select from "@/components/Select";
 import { filterListMonth, filterListYear } from "@/constans/masterdata";
 import TableFilterLayout from "@/features/TableFilterLayout";
-import { CalendarDays, FileSpreadsheet, MinusCircle, PlusCircle, Printer } from "lucide-react";
+import {
+  CalendarDays,
+  FileSpreadsheet,
+  MinusCircle,
+  PlusCircle,
+  Printer,
+} from "lucide-react";
+import useLaporanKeuangan from "./useLaporanKeuangan";
+import SummaryCard from "./component/SummaryCard";
 
 const LaporanKeuangan = () => {
+  const { cardData, pemasukanData, pengeluaranData } = useLaporanKeuangan();
   return (
     <div className="flex-1 p-4 lg:p-8">
       <Header
@@ -51,111 +61,66 @@ const LaporanKeuangan = () => {
 
       {/* Report Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-100">
-          <p className="text-sm font-medium text-emerald-800 mb-1">Total Pemasukan</p>
-          <h3 className="text-2xl font-bold text-emerald-600">Rp 4.200.000</h3>
-        </div>
-        <div className="bg-rose-50 rounded-xl p-6 border border-rose-100">
-          <p className="text-sm font-medium text-rose-800 mb-1">Total Pengeluaran</p>
-          <h3 className="text-2xl font-bold text-rose-600">Rp 3.500.000</h3>
-        </div>
-        <div className="bg-brand-50 rounded-xl p-6 border border-brand-100">
-          <p className="text-sm font-medium text-brand-800 mb-1">Surplus / Defisit</p>
-          <h3 className="text-2xl font-bold text-brand-600">+ Rp 700.000</h3>
-        </div>
+        {cardData.map((card, index) => (
+          <Card
+            key={index}
+            layoutClassname={`${card.bg} ${card.border} rounded-xl`}
+            summary={
+              <div>
+                <p className={`text-sm font-medium mb-1 ${card.text.label}`}>
+                  {card.title}
+                </p>
+                <h3 className={`text-2xl font-bold ${card.text.value}`}>
+                  {card.value}
+                </h3>
+              </div>
+            }
+          />
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Pemasukan List */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
-          <div className="p-4 border-b border-slate-200 bg-slate-50 shrink-0">
-            <h3 className="font-bold text-slate-800 flex items-center gap-2">
-              <PlusCircle className="w-5 h-5 text-emerald-500" /> Rincian Pemasukan
-            </h3>
-          </div>
-          <div className="p-0 flex-1">
-            <table className="w-full text-sm text-left text-slate-600 h-full">
-              <tbody className="divide-y divide-slate-100">
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Iuran Warga Tetap</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 3.500.000</td>
-                </tr>
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Iuran Warga Kontrak</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 400.000</td>
-                </tr>
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Donatur / Lain-lain</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 300.000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="bg-emerald-50/50 border-t border-slate-200 mt-auto">
-            <table className="w-full text-sm font-bold">
-              <tbody>
-                <tr>
-                  <td className="px-6 py-4 text-slate-800">Total Pemasukan</td>
-                  <td className="px-6 py-4 text-emerald-600 text-right">Rp 4.200.000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <SummaryCard
+          title="Pemasukan"
+          icon={<PlusCircle className="w-5 h-5 text-emerald-500" />}
+          data={pemasukanData}
+          total="Rp 4.200.000"
+          totalColor="text-emerald-600"
+        />
 
-        {/* Pengeluaran List */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
-          <div className="p-4 border-b border-slate-200 bg-slate-50 shrink-0">
-            <h3 className="font-bold text-slate-800 flex items-center gap-2">
-              <MinusCircle className="w-5 h-5 text-rose-500" /> Rincian Pengeluaran
-            </h3>
-          </div>
-          <div className="p-0 flex-1">
-            <table className="w-full text-sm text-left text-slate-600 h-full">
-              <tbody className="divide-y divide-slate-100">
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Operasional Keamanan</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 2.500.000</td>
-                </tr>
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Listrik Fasum & Jalan</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 350.000</td>
-                </tr>
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Kebersihan / Sampah</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 500.000</td>
-                </tr>
-                <tr className="hover:bg-slate-50">
-                  <td className="px-6 py-4">Pemeliharaan & Konsumsi</td>
-                  <td className="px-6 py-4 font-medium text-right text-slate-800">Rp 150.000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="bg-rose-50/50 border-t border-slate-200 mt-auto">
-            <table className="w-full text-sm font-bold">
-              <tbody>
-                <tr>
-                  <td className="px-6 py-4 text-slate-800">Total Pengeluaran</td>
-                  <td className="px-6 py-4 text-rose-600 text-right">Rp 3.500.000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <SummaryCard
+          title="Pengeluaran"
+          icon={<MinusCircle className="w-5 h-5 text-rose-500" />}
+          data={pengeluaranData}
+          total="Rp 3.500.000"
+          totalColor="text-rose-600"
+        />
       </div>
-      
+
       {/* Saldo Akhir */}
-      <div className="bg-slate-800 rounded-xl p-6 text-white flex flex-col sm:flex-row items-center justify-between shadow-lg mb-8">
-        <div>
-          <h3 className="text-lg font-medium text-slate-300">Saldo Akhir Bulan Ini</h3>
-          <p className="text-sm text-slate-400 mt-1">Total akumulasi kas RT hingga periode Oktober 2023</p>
-        </div>
-        <div className="mt-4 sm:mt-0 text-right">
-          <div className="text-3xl font-bold text-brand-400">Rp 16.150.000</div>
-          <p className="text-sm text-slate-400 mt-1">(Bulan lalu: Rp 15.450.000)</p>
-        </div>
-      </div>
+      <Card
+        layoutClassname="bg-slate-800 rounded-xl text-white shadow-lg mb-8"
+        summary={
+          <div className="flex flex-col sm:flex-row items-center justify-between">
+            <div>
+              <h3 className="text-lg font-medium text-slate-300">
+                Saldo Akhir Bulan Ini
+              </h3>
+              <p className="text-sm text-slate-400 mt-1">
+                Total akumulasi kas RT hingga periode Oktober 2023
+              </p>
+            </div>
+            <div className="mt-4 sm:mt-0 text-right">
+              <div className="text-3xl font-bold text-brand-400">
+                Rp 16.150.000
+              </div>
+              <p className="text-sm text-slate-400 mt-1">
+                (Bulan lalu: Rp 15.450.000)
+              </p>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 };
