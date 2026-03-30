@@ -62,6 +62,7 @@ export const allMenus: IMenuItem[] = [
         icon: (
           <LineChartIcon className="w-5 h-5 text-slate-400 group-hover:text-brand-500 transition-colors" />
         ),
+         path: PATH.LAPORAN_KEUANGAN,
       },
       {
         key: "pengaturan",

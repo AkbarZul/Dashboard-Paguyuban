@@ -46,6 +46,21 @@ export const filterListMonth: List[] = [
   },
 ];
 
+export const filterListYear: List[] = [
+  {
+    label: "2024",
+    value: "2024",
+  },
+  {
+    label: "2025",
+    value: "2025",
+  },
+  {
+    label: "2026",
+    value: "2026",
+  },
+];
+
 export const filterListBlok: List[] = [
   {
     label: "Blok A",
