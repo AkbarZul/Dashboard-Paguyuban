@@ -1,8 +1,15 @@
+import Button from "@/components/Button";
 import Header from "@/components/Header";
+
 import SummaryCard from "@/features/SummaryCard/SummaryCard";
+
 import { Save, Trash2 } from "lucide-react";
 
+import ProfileSection from "./component/ProfileSection";
+import useProfileSection from "./component/ProfileSection/useProfileSection";
+
 const Pengaturan = () => {
+  const profileSectionProps = useProfileSection()
   return (
     <div>
       <Header
@@ -10,73 +17,11 @@ const Pengaturan = () => {
         subTitle="Konfigurasi profil lingkungan, nominal iuran, dan akses kepengurusan."
       />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* Kolom Kiri - Pengaturan Form */}
+
         <div className="lg:col-span-2 space-y-6">
           {/* Card 1: Profil Lingkungan */}
-          <SummaryCard
-            title="Profil Lingkungan (RT/RW)"
-            content={
-              <div className="p-6 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Ketua RT
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue="Budi Santoso"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Ketua RW
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue="Herman Jaya"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Nomor RT
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue="01"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Nomor RW
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue="05"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500"
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Kelurahan & Kecamatan
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue="Sukamaju, Kec. Cilodong, Kota Depok"
-                      className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end pt-4 border-t border-slate-100 mt-4">
-                  <button className="bg-slate-600 hover:bg-brand-700 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
-                    <Save className="w-4 h-4" /> Simpan Perubahan
-                  </button>
-                </div>
-              </div>
-            }
-          />
+
+          <ProfileSection {...profileSectionProps} />
 
           {/* Card 2: Nominal Iuran Dasar */}
           <SummaryCard
@@ -131,9 +76,9 @@ const Pengaturan = () => {
                   terdaftar.
                 </p>
                 <div className="flex justify-end pt-4 border-t border-slate-100 mt-4">
-                  <button className="bg-slate-700 hover:bg-brand-700 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+                  <Button className="bg-slate-700 hover:bg-brand-700 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
                     <Save className="w-4 h-4" /> Simpan Pengaturan Iuran
-                  </button>
+                  </Button>
                 </div>
               </div>
             }
@@ -146,9 +91,9 @@ const Pengaturan = () => {
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
               <h3 className="font-bold text-slate-800">Akses Pengurus</h3>
-              <button className="text-brand-600 text-sm font-medium hover:underline">
+              <Button className="text-brand-600 text-sm font-medium hover:underline">
                 Tambah Baru
-              </button>
+              </Button>
             </div>
             <div className="p-4">
               <div className="space-y-4">
@@ -183,12 +128,9 @@ const Pengaturan = () => {
                       </p>
                     </div>
                   </div>
-                  <button
-                    className="text-slate-400 hover:text-rose-600 transition-colors"
-                    title="Cabut Akses"
-                  >
+                  <Button className="text-slate-400 hover:text-rose-600 transition-colors">
                     <Trash2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
                 {/* User 3 */}
                 <div className="flex items-center justify-between">
@@ -205,12 +147,9 @@ const Pengaturan = () => {
                       </p>
                     </div>
                   </div>
-                  <button
-                    className="text-slate-400 hover:text-rose-600 transition-colors"
-                    title="Cabut Akses"
-                  >
+                  <Button className="text-slate-400 hover:text-rose-600 transition-colors">
                     <Trash2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
