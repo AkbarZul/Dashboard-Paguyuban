@@ -1170,6 +1170,11 @@ globals@^17.4.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-17.4.0.tgz#33d7d297ed1536b388a0e2f4bcd0ff19c8ff91b5"
   integrity sha512-hjrNztw/VajQwOLsMNT1cbJiH2muO3OROCHnbehc8eY5JyD2gqz4AcMHPqgaOR59DjgUjYAYLeH699g/eWi2jw==
 
+goober@^2.1.10:
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.18.tgz#b72d669bd24d552d441638eee26dfd5716ea6442"
+  integrity sha512-2vFqsaDVIT9Gz7N6kAL++pLpp41l3PfDuusHcjnGLfR6+huZkl6ziX+zgVC3ZxpqWhzH6pyDdGrCeDhMIvwaxw==
+
 has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
@@ -1700,6 +1705,18 @@ react-dom@^19.2.4:
   dependencies:
     scheduler "^0.27.0"
 
+react-hook-form@7.51.2:
+  version "7.51.2"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.2.tgz#79f7f72ee217c5114ff831012d1a7ec344096e7f"
+  integrity sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==
+
+react-hot-toast@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-2.4.1.tgz#df04295eda8a7b12c4f968e54a61c8d36f4c0994"
+  integrity sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==
+  dependencies:
+    goober "^2.1.10"
+
 react-router@7.1.5:
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-7.1.5.tgz#c9e19d329d9ce2215fdae844ab6b023b911094db"
@@ -2048,6 +2065,11 @@ yocto-queue@^0.1.0:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-4.0.2.tgz#bc605eba49ce0fcd598c127fee1c236be3f22918"
   integrity sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==
+
+zod@3.22.4:
+  version "3.22.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
+  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
 
 "zod@^3.25.0 || ^4.0.0":
   version "4.3.6"
