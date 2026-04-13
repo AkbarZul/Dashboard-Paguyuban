@@ -47,7 +47,7 @@ const InputText: React.FC<StandardTextFieldProps> = ({
       <div
         className={cn([
           "max-w-full inline-flex",
-          value && "bg-slate-100",
+          value && "bg-slate-100 rounded-lg",
           disabled && "bg-slate-100 border border-slate-200 rounded-lg",
           Icon && "relative",
           className,
