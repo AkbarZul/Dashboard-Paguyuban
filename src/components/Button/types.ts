@@ -5,4 +5,5 @@ export interface ButtonProps {
   className?: string;
   children: ReactNode;
   disabled?: boolean
+  type?: "submit" | "reset"
 }

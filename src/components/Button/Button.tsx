@@ -1,9 +1,9 @@
 import cn from "@/helpers/cn";
 import { ButtonProps } from "./types";
 
-const Button = ({ onClick, className, children, disabled }: ButtonProps) => {
+const Button = ({ onClick, className, children, disabled, type }: ButtonProps) => {
   return (
-    <button onClick={onClick} disabled={disabled} className={cn(className)}>
+    <button type={type} onClick={onClick} disabled={disabled} className={cn(className)}>
       {children}
     </button>
   );

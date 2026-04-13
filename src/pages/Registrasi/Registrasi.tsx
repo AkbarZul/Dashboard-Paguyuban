@@ -1,7 +1,23 @@
 import Footer from "@/components/Footer";
 import { Home, Mail, MapPin, User, Lock } from "lucide-react";
+import { useForm } from "react-hook-form";
+import schema, { FormValues } from "./schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import TextField from "@/components/ReactHookFields/TextField";
+import Button from "@/components/Button";
+import { useNavigate } from "react-router";
+import { LOGIN } from "@/constans/routePaths";
 
 const Registrasi = () => {
+  const { control, handleSubmit } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { name: "", homeNumber: "", email: "", password: "" },
+    mode: "onChange",
+  });
+  const navigate = useNavigate();
+  const handleRegisSubmit = () => {
+    navigate(LOGIN);
+  };
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans relative overflow-hidden">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-200 z-10 overflow-hidden transform transition-all">
@@ -18,88 +34,66 @@ const Registrasi = () => {
         </div>
 
         <div className="p-8">
-          <form className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Nama Lengkap
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Budi Santoso"
-                  className="pl-10 w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Blok / Nomor Rumah
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <MapPin className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Blok A / 01"
-                  className="pl-10 w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
-                />
-              </div>
-            </div>
+          <form
+            onSubmit={handleSubmit(handleRegisSubmit)}
+            className="space-y-5"
+          >
+            <TextField
+              control={control}
+              type="text"
+              name="name"
+              label="Nama Lengkap"
+              Icon={<User className="h-5 w-5 text-slate-400" />}
+              placeholder="Budi Santoso"
+              layoutClassname="w-full"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Email Anda
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="email"
-                  required
-                  placeholder="email@contoh.com"
-                  className="pl-10 w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
-                />
-              </div>
-            </div>
+            <TextField
+              control={control}
+              type="text"
+              name="homeNumber"
+              label="Blok / Nomor Rumah"
+              Icon={<MapPin className="h-5 w-5 text-slate-400" />}
+              placeholder="Blok A / 01"
+              layoutClassname="w-full"
+            />
+            <TextField
+              control={control}
+              type="text"
+              name="email"
+              label="Email Anda"
+              Icon={<Mail className="h-5 w-5 text-slate-400" />}
+              placeholder="email@contoh.com"
+              layoutClassname="w-full"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700">
-                Kata Sandi
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  className="pl-10 w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
-                />
-              </div>
-            </div>
+            <TextField
+              control={control}
+              type="password"
+              name="password"
+              label="Kata Sandi"
+              Icon={<Lock className="h-5 w-5 text-slate-400" />}
+              placeholder="••••••••"
+              layoutClassname="w-full"
+            />
 
-            <button
+            <Button
               type="submit"
               className="w-full bg-slate-700 hover:bg-brand-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors shadow-sm mt-6"
             >
               Buat Akun
-            </button>
+            </Button>
           </form>
 
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">
             <p className="text-sm text-slate-600">
               Sudah memiliki akun?{" "}
-              <button className="font-semibold text-brand-600 hover:text-brand-700">
+              <Button
+                className="font-semibold text-brand-600 hover:text-brand-700"
+                onClick={() => navigate(LOGIN)}
+              >
                 Masuk sekarang
-              </button>
+              </Button>
             </p>
           </div>
         </div>
