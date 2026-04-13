@@ -12,7 +12,8 @@ import {
   Printer,
 } from "lucide-react";
 import useLaporanKeuangan from "./useLaporanKeuangan";
-import SummaryCard from "./component/SummaryCard";
+import SummaryCard from "../../features/SummaryCard/SummaryCard";
+import { ContentProps, FooterProps } from "./types";
 
 const LaporanKeuangan = () => {
   const { cardData, pemasukanData, pengeluaranData } = useLaporanKeuangan();
@@ -83,17 +84,27 @@ const LaporanKeuangan = () => {
         <SummaryCard
           title="Pemasukan"
           icon={<PlusCircle className="w-5 h-5 text-emerald-500" />}
-          data={pemasukanData}
-          total="Rp 4.200.000"
-          totalColor="text-emerald-600"
+          content={<Content data={pemasukanData} />}
+          footer={
+            <Footer
+              title="Pemasukan"
+              total="Rp 4.200.000"
+              totalColor="text-emerald-600"
+            />
+          }
         />
 
         <SummaryCard
           title="Pengeluaran"
           icon={<MinusCircle className="w-5 h-5 text-rose-500" />}
-          data={pengeluaranData}
-          total="Rp 3.500.000"
-          totalColor="text-rose-600"
+          content={<Content data={pengeluaranData} />}
+          footer={
+            <Footer
+              title="Pengeluaran"
+              total="Rp 3.500.000"
+              totalColor="text-rose-600"
+            />
+          }
         />
       </div>
 
@@ -126,3 +137,37 @@ const LaporanKeuangan = () => {
 };
 
 export default LaporanKeuangan;
+
+export const Content = ({ data }: ContentProps) => {
+  return (
+    <div className="flex-1">
+      <table className="w-full text-sm text-left text-slate-600">
+        <tbody className="divide-y divide-slate-100">
+          {data.map((item, index) => (
+            <tr key={index} className="hover:bg-slate-50">
+              <td className="px-6 py-4">{item.label}</td>
+              <td className="px-6 py-4 font-medium text-right text-slate-800">
+                {item.value}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export const Footer = ({ title, total, totalColor }: FooterProps) => {
+  return (
+    <div className="bg-slate-50 border-t border-slate-200 mt-auto">
+      <table className="w-full text-sm font-bold">
+        <tbody>
+          <tr>
+            <td className="px-6 py-4 text-slate-800">Total {title}</td>
+            <td className={`px-6 py-4 text-right ${totalColor}`}>{total}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
