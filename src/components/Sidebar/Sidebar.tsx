@@ -5,6 +5,7 @@ import { DefaultUser } from "@/assets/png";
 import { SidebarProps } from "./types";
 import Button from "@/components/Button";
 import { useNavigate } from "react-router";
+import { LOGIN } from "@/constans/routePaths";
 
 const Sidebar = ({
   isMobileMenuOpen,
@@ -17,6 +18,9 @@ const Sidebar = ({
     setActiveMenu(key);
     navigate(path);
   };
+  const hanldeLogout = () => {
+    navigate(LOGIN)
+  }
   return (
     <>
       {isMobileMenuOpen && (
@@ -98,7 +102,7 @@ const Sidebar = ({
               </p>
               <p className="text-xs text-slate-400 truncate">Ketua RT 01</p>
             </div>
-            <Button className="text-slate-400 hover:text-rose-400 transition-colors">
+            <Button onClick={hanldeLogout} className="text-slate-400 hover:text-rose-400 transition-colors">
               <LogOut className="w-5 h-5" />
             </Button>
           </div>

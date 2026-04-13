@@ -5,6 +5,9 @@ import DataWarga from "@/pages/DataWarga";
 import PengeluaranKas from "@/pages/PengeluaranKas";
 import LaporanKeuangan from "@/pages/LaporanKeuangan";
 import Pengaturan from "@/pages/Pengaturan";
+import Login from "@/pages/Login";
+import Registrasi from "@/pages/Registrasi";
+import { Navigate } from "react-router";
 
 export const routes = [
   {
@@ -27,8 +30,23 @@ export const routes = [
     path: PATH.LAPORAN_KEUANGAN,
     element: <LaporanKeuangan />,
   },
-    {
+  {
     path: PATH.PENGATURAN,
     element: <Pengaturan />,
+  },
+];
+
+export const publicRoutes = [
+  {
+    path: "/",
+    element: <Navigate to={PATH.LOGIN} replace />,
+  },
+  {
+    path: PATH.LOGIN,
+    element: <Login />,
+  },
+  {
+    path: PATH.REGISTRASI,
+    element: <Registrasi />,
   },
 ];

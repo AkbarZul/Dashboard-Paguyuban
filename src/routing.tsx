@@ -1,8 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router";
-import { routes } from "./routes";
+import { routes, publicRoutes } from "./routes";
 import { DashboardLayout } from "@/components/Layout";
 const Routing = () => {
   const router = createBrowserRouter([
+    ...publicRoutes,
     {
       element: <DashboardLayout />,
       children: routes.map((route) => ({
