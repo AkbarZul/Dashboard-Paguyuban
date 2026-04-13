@@ -4,6 +4,7 @@ import * as PATH from "@/constans/routePaths";
 import DataWarga from "@/pages/DataWarga";
 import PengeluaranKas from "@/pages/PengeluaranKas";
 import LaporanKeuangan from "@/pages/LaporanKeuangan";
+import Pengaturan from "@/pages/Pengaturan";
 
 export const routes = [
   {
@@ -22,8 +23,12 @@ export const routes = [
     path: PATH.PENGELUARAN_KAS,
     element: <PengeluaranKas />,
   },
-    {
+  {
     path: PATH.LAPORAN_KEUANGAN,
     element: <LaporanKeuangan />,
+  },
+    {
+    path: PATH.PENGATURAN,
+    element: <Pengaturan />,
   },
 ];
