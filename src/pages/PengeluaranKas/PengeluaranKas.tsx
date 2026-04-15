@@ -8,9 +8,14 @@ import usePengeluaranKas from "./usePengeluaranKas";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import Table from "@/components/Table";
 import InputSelect from "@/components/Inputs/InputSelect";
+import { usePopup } from "@/contexts/PopupContext";
+import useTambahPengeluaran from "./TambahPengeluaran/useTambahPengeluaran";
+import TambahPengeluaran from "./TambahPengeluaran";
 
 const PengeluaranKas = () => {
   const { dataPengeluaran, columnConfig } = usePengeluaranKas();
+    const tambahPengeluaranProps = useTambahPengeluaran()
+  const { open } = usePopup()
   return (
     <div className="flex-1 p-4 lg:p-8">
       <Header
@@ -23,7 +28,7 @@ const PengeluaranKas = () => {
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Unduh Laporan</span>
               </Button>
-              <Button className="bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+              <Button onClick={open} className="bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
                 <MinusCircle className="w-5 h-5" />
                 Catat Pengeluaran
               </Button>
@@ -55,6 +60,7 @@ const PengeluaranKas = () => {
           <Table columns={columnConfig} data={dataPengeluaran} />
         </div>
       </div>
+      <TambahPengeluaran {...tambahPengeluaranProps} />
     </div>
   );
 };
