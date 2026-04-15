@@ -37,8 +37,9 @@ const InputText: React.FC<StandardTextFieldProps> = ({
     >
       <label
         className={cn(
-          "text-sm font-medium text-slate-700 mb-1",
+          "text-sm font-medium text-slate-700",
           !label && "flex items-center",
+          label && 'mb-1'
         )}
         htmlFor={id}
       >
@@ -47,8 +48,8 @@ const InputText: React.FC<StandardTextFieldProps> = ({
       <div
         className={cn([
           "max-w-full inline-flex",
-          value && "bg-slate-100 rounded-lg",
-          disabled && "bg-slate-100 border border-slate-200 rounded-lg",
+          value && "bg-slate-200 rounded-lg",
+          disabled && "bg-slate-200 border border-slate-200 rounded-lg",
           Icon && "relative",
           className,
         ])}
@@ -60,8 +61,8 @@ const InputText: React.FC<StandardTextFieldProps> = ({
         <input
           className={cn(
             "w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-brand-500",
-            value && "bg-slate-100",
-            disabled && "bg-slate-100 text-black placeholder:text-unactive",
+            value && "bg-slate-200",
+            disabled && "bg-slate-200 text-black placeholder:text-unactive",
             Icon && "pl-10",
             errorMessage && "border-rose-500",
             inputProps?.className,

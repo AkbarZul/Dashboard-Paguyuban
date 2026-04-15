@@ -1,7 +1,6 @@
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import Select from "@/components/Select";
 import { filterListMonth, filterListYear } from "@/constans/masterdata";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import {
@@ -14,6 +13,7 @@ import {
 import useLaporanKeuangan from "./useLaporanKeuangan";
 import SummaryCard from "../../features/SummaryCard/SummaryCard";
 import { ContentProps, FooterProps } from "./types";
+import InputSelect from "@/components/Inputs/InputSelect";
 
 const LaporanKeuangan = () => {
   const { cardData, pemasukanData, pengeluaranData } = useLaporanKeuangan();
@@ -46,13 +46,15 @@ const LaporanKeuangan = () => {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <Select
-            layoutClassname="border border-slate-200 bg-slate-50 rounded-lg text-sm text-slate-700 py-2 px-3 outline-none cursor-pointer focus:border-brand-500"
+          <InputSelect
             list={filterListMonth}
+            layoutClassname="w-[150px]"
+            placeholder="Pilih Bulan..."
           />
-          <Select
-            layoutClassname="border border-slate-200 bg-slate-50 rounded-lg text-sm text-slate-700 py-2 px-3 outline-none cursor-pointer focus:border-brand-500"
+          <InputSelect
             list={filterListYear}
+            layoutClassname="w-[150px]"
+            placeholder="Pilih Tahun..."
           />
           <Button className="bg-slate-800 hover:bg-slate-200 text-white hover:text-slate-900 text-sm font-medium py-2 px-4 rounded-lg transition-colors">
             Tampilkan

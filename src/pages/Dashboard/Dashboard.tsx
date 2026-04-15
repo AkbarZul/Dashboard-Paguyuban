@@ -6,9 +6,9 @@ import Header from "@/components/Header";
 import Button from "@/components/Button";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
-import Select from "@/components/Select";
 import { filterListStatus } from "@/constans/masterdata";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
+import InputSelect from "@/components/Inputs/InputSelect";
 
 const Dashboard = () => {
   const { cardData, transactions, columnConfig } = useDashboard();
@@ -45,10 +45,7 @@ const Dashboard = () => {
       {/* Filter Bar */}
       <TableFilterLayout>
         <SearchBar placeholder="Cari nama warga, blok, atau transaksi..." />
-        <Select
-          layoutClassname="border border-slate-200 bg-slate-50 rounded-lg text-sm text-slate-700 py-2 px-3 outline-none cursor-pointer focus:border-brand-500"
-          list={filterListStatus}
-        />
+        <InputSelect list={filterListStatus} layoutClassname="w-[250px]" />
       </TableFilterLayout>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">

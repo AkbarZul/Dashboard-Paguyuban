@@ -1,13 +1,13 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
-import Select from "@/components/Select";
 import { filterListMonth, filterListStatus } from "@/constans/masterdata";
 import TableFilterLayout from "@/features/TableFilterLayout";
-import { Download, Filter, MinusCircle } from "lucide-react";
+import { Download, MinusCircle } from "lucide-react";
 import usePengeluaranKas from "./usePengeluaranKas";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import Table from "@/components/Table";
+import InputSelect from "@/components/Inputs/InputSelect";
 
 const PengeluaranKas = () => {
   const { dataPengeluaran, columnConfig } = usePengeluaranKas();
@@ -33,24 +33,21 @@ const PengeluaranKas = () => {
       />
       {/* Filter Bar */}
       <TableFilterLayout>
-        <SearchBar placeholder="Cari keterangan..." />
+        <SearchBar placeholder="Cari nama atau blok..." />
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center border border-slate-200 bg-slate-50 rounded-lg overflow-hidden">
-            <span className="px-3 text-slate-500 text-sm border-r border-slate-200 bg-slate-100 flex items-center">
-              <Filter className="w-4 h-4 mr-1" /> Filter
-            </span>
-            <Select
-              layoutClassname="bg-transparent text-sm text-slate-700 py-2 px-3 outline-none focus:ring-0 cursor-pointer"
-              list={filterListMonth}
-            />
-          </div>
-          <Select
-            layoutClassname="border border-slate-200 bg-slate-50 rounded-lg text-sm text-slate-700 py-2 px-3 outline-none cursor-pointer focus:border-brand-500"
+          <InputSelect
+            list={filterListMonth}
+            layoutClassname="w-[150px]"
+            placeholder="Pilih Bulan..."
+          />
+
+          <InputSelect
             list={filterListStatus}
+            layoutClassname="w-[150px]"
+            placeholder="Pilih Status..."
           />
         </div>
       </TableFilterLayout>
-
       {/* Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
         <TransactionHeader />

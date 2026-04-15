@@ -1,34 +1,36 @@
-import InputText, { StandardTextFieldProps } from "../Inputs/InputText/InputText";
 import { Controller, FieldPath, FieldValues } from "react-hook-form";
-
+import InputSelect, {
+  InputSelectProps,
+} from "../Inputs/InputSelect/InputSelect";
 import { ReactHookFieldProps } from "./form-field";
 
 type Props<
   TFormField extends FieldValues,
+  TValue,
   TName extends FieldPath<TFormField> = FieldPath<TFormField>,
-> = ReactHookFieldProps<TFormField, TName> & StandardTextFieldProps;
+> = ReactHookFieldProps<TFormField, TName> & InputSelectProps<TValue>;
 
-const TextField = <TFormField extends FieldValues>({
+const SelectField = <TFormField extends FieldValues, TValue>({
   control,
   name,
   rules,
   disabled,
-  type,
+  onChange,
   ...props
-}: Props<TFormField>) => {
+}: Props<TFormField, TValue>) => {
   return (
     <Controller
       control={control}
       name={name}
       rules={rules}
       render={({ field, fieldState }) => (
-        <InputText
-          type={type}
+        <InputSelect<TValue>
           {...props}
-          id={field.name}
-          name={field.name}
-          value={field.value as string}
-          onChange={(e) => field.onChange(e.target.value)}
+          value={field.value}
+          onChange={(value) => {
+            field.onChange(value);
+            onChange?.(value);
+          }}
           errorMessage={fieldState.error?.message}
           disabled={disabled}
         />
@@ -37,4 +39,4 @@ const TextField = <TFormField extends FieldValues>({
   );
 };
 
-export default TextField;
+export default SelectField;
