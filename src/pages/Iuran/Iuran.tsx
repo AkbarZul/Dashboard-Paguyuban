@@ -8,9 +8,14 @@ import Table from "@/components/Table";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import Button from "@/components/Button";
 import InputSelect from "@/components/Inputs/InputSelect";
+import { usePopup } from "@/contexts/PopupContext";
+import TambahIuran from "./TambahIuran";
+import useTambahIuran from "./TambahIuran/useTambahIuran";
 
 const Iuran = () => {
   const { dataPemasukan, columnConfig } = useIuran();
+  const tambahIuranProps = useTambahIuran()
+  const { open } = usePopup()
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header Halaman */}
@@ -24,7 +29,7 @@ const Iuran = () => {
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Unduh Laporan</span>
               </Button>
-              <Button className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+              <Button onClick={open} className="bg-slate-300 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
                 <PlusCircle className="w-5 h-5" />
                 Catat Pembayaran
               </Button>
@@ -58,6 +63,7 @@ const Iuran = () => {
           <Table columns={columnConfig} data={dataPemasukan} />
         </div>
       </div>
+      <TambahIuran {...tambahIuranProps} />
     </div>
   );
 };
