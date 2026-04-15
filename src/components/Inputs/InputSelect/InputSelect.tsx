@@ -12,6 +12,7 @@ export interface InputSelectProps<T> {
   errorMessage?: string;
   layoutClassname?: string;
   containerClassname?: string;
+  label?: string;
 }
 const InputSelect = <T,>({
   list,
@@ -22,6 +23,7 @@ const InputSelect = <T,>({
   errorMessage,
   layoutClassname,
   containerClassname,
+  label,
 }: InputSelectProps<T>) => {
   const {
     inputRef,
@@ -42,6 +44,15 @@ const InputSelect = <T,>({
   });
   return (
     <div ref={containerRef} className={cn("relative w-full", layoutClassname)}>
+      <label
+        className={cn(
+          "text-sm font-medium text-slate-700",
+          !label && "flex items-center",
+          label && "mb-1",
+        )}
+      >
+        {label}
+      </label>
       <div
         onClick={toggle}
         className={cn(

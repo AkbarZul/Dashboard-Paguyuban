@@ -1,10 +1,13 @@
 import { SidebarProvider } from "@/contexts/SidebarContext";
 import Routing from "./routing";
+import { PopupProvider } from "./contexts/PopupContext";
 
 function App() {
   return (
     <SidebarProvider>
-      <Routing />
+      <PopupProvider>
+        <Routing />
+      </PopupProvider>
     </SidebarProvider>
   );
 }
