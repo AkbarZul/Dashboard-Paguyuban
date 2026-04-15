@@ -81,7 +81,7 @@ const InputText: React.FC<StandardTextFieldProps> = ({
       </div>
       {errorMessage && (
         <div
-          className="mt-1 text-sm text-rose-600"
+          className="mt-1 text-[10px] text-rose-600"
           data-testid={"error_input_" + name}
         >
           {errorMessage}
