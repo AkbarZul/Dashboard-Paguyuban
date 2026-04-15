@@ -1,9 +1,7 @@
 import Card from "@/components/Card";
 import useDashboard from "./useDashboard";
-import { PlusCircle } from "lucide-react";
 import Table from "@/components/Table";
 import Header from "@/components/Header";
-import Button from "@/components/Button";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
 import { filterListStatus } from "@/constans/masterdata";
@@ -18,16 +16,6 @@ const Dashboard = () => {
       <Header
         title="Ringkasan Kas Paguyuban Kav BRI"
         subTitle="Pantau kondisi keuangan dan partisipasi iuran warga bulan ini."
-        actionButton={
-          <div>
-            <div className="hidden sm:flex items-center gap-4 ml-auto">
-              <Button className="bg-white hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
-                <PlusCircle className="w-5 h-5" />
-                <span className="hidden sm:inline">Catat Pemasukan</span>
-              </Button>
-            </div>
-          </div>
-        }
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {cardData.map((item, index) => (
