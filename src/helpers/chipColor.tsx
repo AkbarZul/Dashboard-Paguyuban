@@ -1,4 +1,4 @@
-import { STATUS_TRANSAKSI, STATUS_WARGA } from "@/constans/masterdata";
+import { MAPPING_STATUS_WARGA, STATUS_TRANSAKSI, STATUS_WARGA } from "@/constans/masterdata";
 
 export const TRANSAKSI_STATUS_COLORS = {
   [STATUS_TRANSAKSI.LUNAS]:
@@ -21,7 +21,7 @@ export const renderStatusBadge = (status) => {
 };
 
 export const renderStatusBadgeWarga = (status) => {
-  return <span className={WARGA_STATUS_COLORS[status]}>{status}</span>;
+  return <span className={WARGA_STATUS_COLORS[status]}>{MAPPING_STATUS_WARGA[status]}</span>;
 };
 
 

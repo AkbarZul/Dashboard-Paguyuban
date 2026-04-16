@@ -16,6 +16,7 @@ const DataWarga = () => {
   const { dataWarga, columnConfig } = useDataWarga();
   const { open } = usePopup()
   const tambahWargaProps = useTambahWarga()
+  
   return (
     <div className="flex-1 p-4 lg:p-8">
       <Header

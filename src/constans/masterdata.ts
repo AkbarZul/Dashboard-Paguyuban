@@ -1,4 +1,4 @@
-import { List } from "@/components/Select/types";
+// import { List } from "@/components/Select/types";
 
 export const STATUS_TRANSAKSI = {
   LUNAS: "Lunas",
@@ -8,11 +8,16 @@ export const STATUS_TRANSAKSI = {
 };
 
 export const STATUS_WARGA = {
-  WARGA_TETAP: 'Warga Tetap',
-  WARGA_KONTRAK: 'Warga Kontrak'
+  WARGA_TETAP: 1,
+  WARGA_KONTRAK: 2
 }
 
-export const filterListStatus: List[] = [
+export const MAPPING_STATUS_WARGA = {
+  [STATUS_WARGA.WARGA_TETAP]: "Warga Tetap",
+  [STATUS_WARGA.WARGA_KONTRAK]: "Warga Kontrak"
+}
+
+export const filterListStatus = [
   {
     label: "Lunas",
     value: "Lunas",
@@ -31,7 +36,7 @@ export const filterListStatus: List[] = [
   },
 ];
 
-export const filterListMonth: List[] = [
+export const filterListMonth = [
   {
     label: "Oktober",
     value: "Oktober",
@@ -46,7 +51,7 @@ export const filterListMonth: List[] = [
   },
 ];
 
-export const filterListYear: List[] = [
+export const filterListYear = [
   {
     label: "2024",
     value: "2024",
@@ -61,7 +66,7 @@ export const filterListYear: List[] = [
   },
 ];
 
-export const filterListBlok: List[] = [
+export const filterListBlok = [
   {
     label: "Blok A",
     value: "a",

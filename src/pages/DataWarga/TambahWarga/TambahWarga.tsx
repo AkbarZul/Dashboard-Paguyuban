@@ -4,6 +4,7 @@ import Popup from "@/features/Popup";
 import useTambahWarga from "./useTambahWarga";
 import TextField from "@/components/ReactHookFields/TextField";
 import SelectField from "@/components/ReactHookFields/SelectField";
+import DateField from "@/components/ReactHookFields/DateField";
 
 const TambahWarga = ({ form, status }: ReturnType<typeof useTambahWarga>) => {
   const { control } = form;
@@ -63,6 +64,14 @@ const TambahWarga = ({ form, status }: ReturnType<typeof useTambahWarga>) => {
           name="phoneNumber"
           label="No HP / Whatsapp"
           placeholder="Isi No HP"
+          layoutClassname="w-full"
+        />
+
+        <DateField
+          control={control}
+          name="joinDate"
+          type="date"
+          label="Tanggal Bergabung"
           layoutClassname="w-full"
         />
       </form>

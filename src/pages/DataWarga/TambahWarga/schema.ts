@@ -5,7 +5,8 @@ const schema = z.object({
   name: z.string().trim().min(1, REQUIRED).max(255),
   homeNumber: z.string().trim().min(1, REQUIRED).max(255),
   status: z.number().min(1, REQUIRED).max(255),
-  phoneNumber: z.string().trim().min(1, REQUIRED).max(255)
+  phoneNumber: z.string().trim().min(1, REQUIRED).max(255),
+  joinDate: z.string().trim().min(1, REQUIRED).max(255)
 });
 
 export default schema;

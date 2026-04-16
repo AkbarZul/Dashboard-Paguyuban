@@ -1,11 +1,10 @@
 export interface Warga {
   id: number;
-  name: string;
+  nama: string;
   initials: string;
   nik: string;
-  block: string;
-  status: "Warga Tetap" | "Warga Kontrak";
-  phone: string;
-  familyCount: number;
-  joinDate: string;
+  blok_rumah: string;
+  status_hunian: number;
+  no_hp: string;
+  tanggal_bergabung: string;
 }
