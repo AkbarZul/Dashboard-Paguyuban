@@ -3,4 +3,6 @@ export const defaultValues = {
   homeNumber: "",
   status: 0,
   phoneNumber: "",
+  joinDate: "",
+  initials: "",
 };

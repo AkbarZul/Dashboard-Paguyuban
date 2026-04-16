@@ -1,4 +1,4 @@
-import { DataWargaParams } from "@/types/dataWargatype";
+import { DataWargaParams, DataWargaPayload } from "@/types/dataWargatype";
 import { supabase } from "./supabase";
 
 export const getWarga = async ({
@@ -30,7 +30,7 @@ export const getWarga = async ({
   };
 };
 
-export const createWarga = async (payload: { name: string; nik: string }) => {
+export const createWarga = async (payload: Partial<DataWargaPayload>) => {
   const { error } = await supabase.from("warga").insert(payload);
 
   if (error) throw error;

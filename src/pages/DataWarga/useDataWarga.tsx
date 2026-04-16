@@ -6,14 +6,10 @@ import { getWarga } from "@/services/wargaService";
 
 const useDataWarga = () => {
   const { data } = useQuery({
-  queryKey: ['warga'],
-  queryFn: () =>
-    getWarga({})
-})
+    queryKey: ["warga"],
+    queryFn: () => getWarga({}),
+  });
 
-console.log(data);
-
-  
   const columnConfig: Column<Warga>[] = [
     {
       header: "Nama Warga",
