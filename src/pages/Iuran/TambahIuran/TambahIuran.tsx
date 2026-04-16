@@ -4,6 +4,7 @@ import TextField from "@/components/ReactHookFields/TextField";
 import Popup from "@/features/Popup";
 import useTambahIuran from "./useTambahIuran";
 import { usePopup } from "@/contexts/PopupContext";
+import DateField from "@/components/ReactHookFields/DateField";
 
 const TambahIuran = ({
   form,
@@ -53,9 +54,8 @@ const TambahIuran = ({
             layoutClassname="w-full"
           />
 
-          <TextField
+          <DateField
             control={control}
-            type="text"
             name="periode"
             label="Periode Tagihan"
             placeholder="Isi Periode Tagihan"
