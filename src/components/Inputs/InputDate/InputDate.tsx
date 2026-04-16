@@ -1,7 +1,7 @@
 import cn from "@/helpers/cn";
 import { InputHTMLAttributes } from "react";
 
-export type Mode = 'date' | 'month'
+export type Type = 'date' | 'month'
 
 export type InputDateProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -12,7 +12,7 @@ export type InputDateProps = Omit<
   label?: string;
   layoutClassname?: string;
   containerClassname?: string;
-  type: Mode,
+  type: Type,
 };
 
 const InputDate: React.FC<InputDateProps> = ({
