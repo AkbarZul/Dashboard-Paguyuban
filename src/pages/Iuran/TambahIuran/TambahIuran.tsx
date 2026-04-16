@@ -60,6 +60,7 @@ const TambahIuran = ({
             label="Periode Tagihan"
             placeholder="Isi Periode Tagihan"
             layoutClassname="w-full"
+            type="month"
           />
         </div>
 

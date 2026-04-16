@@ -1,6 +1,8 @@
 import cn from "@/helpers/cn";
 import { InputHTMLAttributes } from "react";
 
+export type Mode = 'date' | 'month'
+
 export type InputDateProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "size"
@@ -10,6 +12,7 @@ export type InputDateProps = Omit<
   label?: string;
   layoutClassname?: string;
   containerClassname?: string;
+  type: Mode,
 };
 
 const InputDate: React.FC<InputDateProps> = ({
@@ -23,6 +26,7 @@ const InputDate: React.FC<InputDateProps> = ({
   onChange,
   name,
   value,
+  type = 'date',
   ...props
 }: InputDateProps) => {
   return (
@@ -66,7 +70,7 @@ const InputDate: React.FC<InputDateProps> = ({
           min={props.min ?? ""}
           placeholder="dd-mm-yyyy"
           title={value as string}
-          type="date"
+          type={type}
           value={value}
           {...inputProps}
         />

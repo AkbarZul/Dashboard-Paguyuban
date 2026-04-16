@@ -12,6 +12,7 @@ const DateField = <TFormField extends FieldValues>({
   name,
   rules,
   disabled,
+  type = 'date',
   ...props
 }: Props<TFormField>) => {
   return (
@@ -25,6 +26,7 @@ const DateField = <TFormField extends FieldValues>({
             {...props}
             id={field.name}
             name={field.name}
+            type={type}
             value={field.value as string}
             onChange={(e) => field.onChange(e.target.value)}
             errorMessage={fieldState.error?.message}
