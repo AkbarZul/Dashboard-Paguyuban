@@ -13,20 +13,26 @@ export const getWarga = async ({
   let query = supabase.from("warga").select("*", { count: "exact" });
 
   if (search) {
-    query = query.or(`name.ilike.%${search}%,block.ilike.%${search}%`);
+    query = query.or(
+      `nama.ilike.%${search}%,blok_rumah.ilike.%${search}%`
+    );
   }
 
   if (block) {
-    query = query.eq("block", block);
+    query = query.eq("blok_rumah", block);
   }
 
   const { data, error, count } = await query.range(from, to);
 
   if (error) throw error;
 
+  const total = count ?? 0;
+  const totalPages = Math.ceil(total / limit);
+
   return {
     data,
-    total: count,
+    total,
+    totalPages,
   };
 };
 

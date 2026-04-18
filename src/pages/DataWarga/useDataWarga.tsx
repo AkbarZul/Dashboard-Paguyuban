@@ -1,14 +1,40 @@
-import { Column } from "@/components/Table/types";
-import { Warga } from "./types";
 import { renderStatusBadgeWarga } from "@/helpers/chipColor";
 import { useQuery } from "@tanstack/react-query";
 import { getWarga } from "@/services/wargaService";
+import { Column } from "@/components/Table/types";
+import { Warga } from "./types";
+import useTableParams from "@/hooks/useTableParams";
+import { useSearchParams } from "react-router";
+import { useState } from "react";
+import { DataWargaParams } from "@/types/dataWargatype";
+
+export const defaultFilters = {
+  page: 1,
+  limit: 10,
+  search: "",
+  block: "",
+};
 
 const useDataWarga = () => {
+  const [searchParams] = useSearchParams();
+  const { filterParams, setFilterParams } = useTableParams({ defaultFilters });
+  const page = Number(searchParams.get("page") ?? 1);
+
   const { data } = useQuery({
-    queryKey: ["warga"],
-    queryFn: () => getWarga({}),
+    queryKey: ["warga", page, filterParams.search, filterParams.block],
+    queryFn: () =>
+      getWarga({
+        ...filterParams,
+        page,
+      }),
   });
+
+    const [values, setValues] = useState(filterParams)
+
+  const handleChange = (
+    field: keyof DataWargaParams,
+    value: string
+  ) => setValues((c) => ({ ...c, [field]: value }))
 
   const columnConfig: Column<Warga>[] = [
     {
@@ -56,6 +82,13 @@ const useDataWarga = () => {
   return {
     dataWarga: data?.data ?? [],
     columnConfig,
+    tablePaginationProps: {
+      totalPages: data?.totalPages,
+      totalRows: data?.total,
+    },
+    values,
+    handleChange,
+    setFilterParams
   };
 };
 

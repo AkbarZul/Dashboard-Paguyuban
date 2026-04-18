@@ -1,27 +1,29 @@
-const Pagination = () => {
-  return (
-    <div className="p-4 border-t border-slate-200 flex items-center justify-between text-sm">
-      <span className="text-slate-500">
-        Menampilkan 1 hingga 6 dari 112 data
-      </span>
-      <div className="flex gap-1">
-        <button className="px-3 py-1 border border-slate-200 rounded text-slate-400 cursor-not-allowed">
-          Seb
-        </button>
-        <button className="px-3 py-1 bg-brand-600 text-white rounded">1</button>
-        <button className="px-3 py-1 border border-slate-200 hover:bg-slate-50 rounded text-slate-600">
-          2
-        </button>
-        <button className="px-3 py-1 border border-slate-200 hover:bg-slate-50 rounded text-slate-600">
-          3
-        </button>
-        <span className="px-2 py-1 text-slate-400">...</span>
-        <button className="px-3 py-1 border border-slate-200 hover:bg-slate-50 rounded text-slate-600">
-          Sel
-        </button>
-      </div>
-    </div>
-  );
+import { useSearchParams } from "react-router";
+
+import { OverrideOptional } from "@/types/utils";
+
+import PaginationUI, { IPagination as IPaginationUI } from "./PaginationUI";
+
+export type IPagination = OverrideOptional<IPaginationUI, "page" | "setPage">;
+
+const Pagination = ({ page = 1, setPage, ...props }: IPagination) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const _page = setPage ? page : +(searchParams.get("page") ?? 1);
+
+  const onClickPage = (page: number) => {
+    if (setPage) {
+      setPage(page);
+    } else {
+      setSearchParams((prev) => {
+        prev.set("page", `${page}`);
+        prev.sort();
+
+        return prev;
+      });
+    }
+  };
+
+  return <PaginationUI {...props} page={_page} setPage={onClickPage} />;
 };
 
 export default Pagination;

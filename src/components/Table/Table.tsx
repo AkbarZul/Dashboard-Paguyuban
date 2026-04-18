@@ -1,8 +1,12 @@
 import { ReactNode } from "react";
-import { TableProps } from "./types";
+import { IData, TableProps } from "./types";
 import Pagination from "./Pagination";
 
-function Table<T>({ columns, data }: TableProps<T>) {
+function Table<T extends IData = IData>({
+  columns,
+  data,
+  tablePaginationProps,
+}: TableProps<T>) {
   return (
     <div className="w-full">
       {/* Desktop */}
@@ -35,7 +39,7 @@ function Table<T>({ columns, data }: TableProps<T>) {
             ))}
           </tbody>
         </table>
-        <Pagination />
+        <Pagination {...tablePaginationProps} />
       </div>
 
       {/* Mobile (Card style) */}
