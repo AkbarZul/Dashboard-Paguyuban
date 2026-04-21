@@ -5,7 +5,7 @@ export const getWarga = async ({
   page = 1,
   limit = 10,
   search,
-  block,
+  status
 }: DataWargaParams) => {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
@@ -18,8 +18,8 @@ export const getWarga = async ({
     );
   }
 
-  if (block) {
-    query = query.eq("blok_rumah", block);
+  if (status > 0) {
+    query = query.eq("status_hunian", status);
   }
 
   const { data, error, count } = await query.range(from, to);

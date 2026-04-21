@@ -3,25 +3,32 @@ import { useQuery } from "@tanstack/react-query";
 import { getWarga } from "@/services/wargaService";
 import { Column } from "@/components/Table/types";
 import { Warga } from "./types";
-import useTableParams from "@/hooks/useTableParams";
+// import useTableParams from "@/hooks/useTableParams";
 import { useSearchParams } from "react-router";
-import { useState } from "react";
-import { DataWargaParams } from "@/types/dataWargatype";
+// import { useState } from "react";
+// import { DataWargaParams } from "@/types/dataWargatype";
+import useFilterChange from "@/hooks/useFilterChange";
 
 export const defaultFilters = {
   page: 1,
   limit: 10,
   search: "",
   block: "",
+  status: 0
 };
 
 const useDataWarga = () => {
   const [searchParams] = useSearchParams();
-  const { filterParams, setFilterParams } = useTableParams({ defaultFilters });
+  // const { filterParams, setFilterParams } = useTableParams({ defaultFilters });
   const page = Number(searchParams.get("page") ?? 1);
 
+  const { values, handleChange, resetFilters, filterParams,  } = useFilterChange({
+  defaultFilters,
+  debounceKeys: ["search"], // 🔥 hanya search yang debounce
+});
+
   const { data } = useQuery({
-    queryKey: ["warga", page, filterParams.search, filterParams.block],
+    queryKey: ["warga", page, filterParams.search, filterParams.status],
     queryFn: () =>
       getWarga({
         ...filterParams,
@@ -29,12 +36,12 @@ const useDataWarga = () => {
       }),
   });
 
-    const [values, setValues] = useState(filterParams)
+  //   const [values, setValues] = useState(filterParams)
 
-  const handleChange = (
-    field: keyof DataWargaParams,
-    value: string
-  ) => setValues((c) => ({ ...c, [field]: value }))
+  // const handleChange = (
+  //   field: keyof DataWargaParams,
+  //   value: string | number
+  // ) => setValues((c) => ({ ...c, [field]: value }))
 
   const columnConfig: Column<Warga>[] = [
     {
@@ -88,7 +95,8 @@ const useDataWarga = () => {
     },
     values,
     handleChange,
-    setFilterParams
+    resetFilters
+    // setFilterParams
   };
 };
 

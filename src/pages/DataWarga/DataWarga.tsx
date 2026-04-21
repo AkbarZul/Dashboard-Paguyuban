@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import Table from "@/components/Table";
-import { filterListBlok } from "@/constans/masterdata";
+import { filterListStatusHunian } from "@/constans/masterdata";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import { Download, PlusCircle } from "lucide-react";
@@ -18,7 +18,7 @@ const DataWarga = () => {
     columnConfig,
     tablePaginationProps,
     values,
-    setFilterParams,
+    resetFilters,
     handleChange,
   } = useDataWarga();
   const { open } = usePopup();
@@ -51,23 +51,16 @@ const DataWarga = () => {
         <SearchBar
           placeholder="Cari nama atau blok..."
           value={values.search}
-          onChange={(e) => {
-            setFilterParams({
-              search: e.target.value,
-            });
-            handleChange("search", e.target.value);
-          }}
+          onChange={(e) => handleChange("search", e.target.value)}
         />
         <InputSelect
-          list={filterListBlok}
+          list={filterListStatusHunian}
           layoutClassname="w-[250px]"
-          value={values.block}
-          onChange={(value) => {
-            setFilterParams({
-              search: value,
-            });
-            handleChange("block", value as string);
-          }}
+          value={values.status}
+          onChange={(value) => handleChange("status", value)}
+          resetFilter={!!values.status}
+          onResetFilter={resetFilters}
+          placeholder="Pilih Status Hunian"
         />
       </TableFilterLayout>
 

@@ -4,18 +4,18 @@ export const STATUS_TRANSAKSI = {
   LUNAS: "Lunas",
   SELESAI: "Selesai",
   MENUNGGU_VERIFIKASI: "Menunggu Verifikasi",
-  MENUNGGAK: 'Menunggak'
+  MENUNGGAK: "Menunggak",
 };
 
 export const STATUS_WARGA = {
   WARGA_TETAP: 1,
-  WARGA_KONTRAK: 2
-}
+  WARGA_KONTRAK: 2,
+};
 
 export const MAPPING_STATUS_WARGA = {
   [STATUS_WARGA.WARGA_TETAP]: "Warga Tetap",
-  [STATUS_WARGA.WARGA_KONTRAK]: "Warga Kontrak"
-}
+  [STATUS_WARGA.WARGA_KONTRAK]: "Warga Kontrak",
+};
 
 export const filterListStatus = [
   {
@@ -79,8 +79,19 @@ export const filterListBlok = [
     label: "Blok C",
     value: "c",
   },
-    {
+  {
     label: "Blok D",
     value: "d",
+  },
+];
+
+export const filterListStatusHunian = [
+  {
+    label: "Warga Tetap",
+    value: STATUS_WARGA.WARGA_TETAP,
+  },
+  {
+    label: "Warga Kontrak",
+    value: STATUS_WARGA.WARGA_KONTRAK,
   },
 ];

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { useInputSelect, Option } from "./useInputSelect";
 import cn from "@/helpers/cn";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
 
 export interface InputSelectProps<T> {
   list: Option<T>[];
@@ -13,6 +13,8 @@ export interface InputSelectProps<T> {
   layoutClassname?: string;
   containerClassname?: string;
   label?: string;
+  resetFilter?: boolean;
+  onResetFilter?: () => void;
 }
 const InputSelect = <T,>({
   list,
@@ -24,6 +26,8 @@ const InputSelect = <T,>({
   layoutClassname,
   containerClassname,
   label,
+  resetFilter,
+  onResetFilter,
 }: InputSelectProps<T>) => {
   const {
     inputRef,
@@ -81,6 +85,13 @@ const InputSelect = <T,>({
         />
 
         <div className="ml-2 flex items-center">
+          {resetFilter && (
+            <X
+              size={18}
+              className="text-gray-400 hover:cursor-pointer"
+              onClick={onResetFilter}
+            />
+          )}
           {open ? (
             <ChevronUp size={18} className="text-gray-400" />
           ) : (

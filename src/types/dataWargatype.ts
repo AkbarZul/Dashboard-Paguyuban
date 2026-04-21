@@ -3,6 +3,7 @@ export interface DataWargaParams {
   limit?: number;
   search?: string;
   block?: string;
+  status?: number
 }
 
 export interface DataWargaPayload {
