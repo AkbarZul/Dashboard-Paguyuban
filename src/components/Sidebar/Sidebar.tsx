@@ -6,6 +6,11 @@ import { SidebarProps } from "./types";
 import Button from "@/components/Button";
 import { useNavigate } from "react-router";
 import { LOGIN } from "@/constans/routePaths";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { toastError } from "../Toast";
+import { useUser } from "@/hooks/useUser";
+import Loading from "../Loading";
 
 const Sidebar = ({
   isMobileMenuOpen,
@@ -13,14 +18,32 @@ const Sidebar = ({
   activeMenu,
   setActiveMenu,
 }: SidebarProps) => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
+  const { data: user, isLoading } = useUser();
   const handleClick = (key: string, path: string) => {
     setActiveMenu(key);
     navigate(path);
   };
-  const hanldeLogout = () => {
-    navigate(LOGIN)
-  }
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      await logout();
+    },
+    onSuccess: () => {
+      navigate(LOGIN);
+    },
+    onError: (err) => {
+      toastError(
+        "Logout gagal",
+        err?.message || "Terjadi kesalahan",
+        "top-right",
+      );
+    },
+  });
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
   return (
     <>
       {isMobileMenuOpen && (
@@ -88,22 +111,53 @@ const Sidebar = ({
           </div>
         </nav>
 
-        {/* User Profile */}
         <div className="p-4 border-t border-slate-800">
-          <div className="flex items-center gap-3">
-            <img
-              src={DefaultUser}
-              alt="Admin"
-              className="w-10 h-10 rounded-full border-2 border-slate-700"
-            />
+          <div className="flex md:hidden items-center gap-3">
+            {user?.email ? (
+              <div className="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white font-semibold">
+                {user.email.charAt(0).toUpperCase()}
+              </div>
+            ) : (
+              <img
+                src={DefaultUser}
+                alt="User"
+                className="w-10 h-10 rounded-full border-2 border-slate-700"
+              />
+            )}
+
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
-                Budi Santoso
-              </p>
-              <p className="text-xs text-slate-400 truncate">Ketua RT 01</p>
+              {isLoading ? (
+                <Loading size="sm" />
+              ) : (
+                <>
+                  <p className="text-sm font-medium text-white truncate">
+                    {user?.email ?? "Guest"}
+                  </p>
+                  <p className="text-xs text-slate-400 truncate">Admin</p>
+                </>
+              )}
             </div>
-            <Button onClick={hanldeLogout} className="text-slate-400 hover:text-rose-400 transition-colors">
+
+            <Button
+              onClick={handleLogout}
+              disabled={logoutMutation.isPending}
+              className="text-slate-400 hover:text-rose-400"
+            >
               <LogOut className="w-5 h-5" />
+            </Button>
+          </div>
+
+          <div className="hidden md:flex items-end">
+
+            <Button
+              onClick={handleLogout}
+              disabled={logoutMutation.isPending}
+              className="flex items-center gap-2 text-white hover:text-rose-500"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="text-sm font-medium">
+                {logoutMutation.isPending ? "Signing out..." : "Sign out"}
+              </span>
             </Button>
           </div>
         </div>

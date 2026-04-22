@@ -6,16 +6,34 @@ import TextField from "@/components/ReactHookFields/TextField";
 import { useForm } from "react-hook-form";
 import schema, { FormValues } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/contexts/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import Button from "@/components/Button";
+import { toastError, toastSuccess } from "@/components/Toast";
 
 const Login = () => {
+  const { login } = useAuth();
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "" },
-    mode: 'onChange'
+    mode: "onChange",
   });
   const navigate = useNavigate();
-  const handleAuthSubmit = () => {
-    navigate(DASHBOARD);
+  const loginMutation = useMutation({
+    mutationFn: async (values: FormValues) => {
+      await login(values.email, values.password);
+    },
+    onSuccess: () => {
+      toastSuccess("Berhasil Login", "Selamat Datang Kembali!", "top-right");
+      navigate(DASHBOARD);
+    },
+    onError: (err) => {
+      toastError("Login gagal", err.message, "top-right");
+    },
+  });
+
+  const handleAuthSubmit = (values: FormValues) => {
+    loginMutation.mutate(values);
   };
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans relative overflow-hidden">
@@ -62,12 +80,13 @@ const Login = () => {
               </a>
             </div>
 
-            <button
+            <Button
               type="submit"
+              disabled={loginMutation.isPending}
               className="w-full bg-slate-600 hover:bg-brand-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors shadow-sm mt-6"
             >
-              Masuk Dashboard
-            </button>
+              {loginMutation.isPending ? "Loading..." : "Masuk Dashboard"}
+            </Button>
           </form>
 
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">

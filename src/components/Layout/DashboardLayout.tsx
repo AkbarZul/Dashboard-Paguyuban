@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 import Footer from "../Footer";
 import TopBarMenu from "../TopBarMenu";
 
-const DashboardLayout = () => {
+const DashboardLayout = ({ children }: { children?: React.ReactNode }) => {
   const { isMobileMenuOpen, setIsMobileMenuOpen, activeMenu, setActiveMenu } =
     useSidebar();
   return (
@@ -21,7 +21,7 @@ const DashboardLayout = () => {
           <TopBarMenu onOpenMenu={() => setIsMobileMenuOpen(true)} />
 
           <main className="flex-1 p-6 overflow-auto">
-            <Outlet />
+            {children ?? <Outlet />}
           </main>
           <Footer />
         </div>
