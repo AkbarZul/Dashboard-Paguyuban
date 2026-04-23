@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes } from "react";
-
 import cn from "@/helpers/cn";
 
 export interface IPagination {
@@ -9,6 +8,8 @@ export interface IPagination {
   totalRows?: number;
 }
 
+const PAGE_LIMIT = 5; // 🔥 jumlah page per group
+
 const Pagination = ({
   page = 1,
   setPage,
@@ -16,26 +17,34 @@ const Pagination = ({
   totalRows = 0,
 }: IPagination) => {
   const onClickBack = () => page > 1 && setPage(page - 1);
-
   const onClickNext = () => page < totalPages && setPage(page + 1);
-
   const onClickPage = (page: number) => setPage(page);
+
+  const currentGroup = Math.ceil(page / PAGE_LIMIT);
+
+  const startPage = (currentGroup - 1) * PAGE_LIMIT + 1;
+  const endPage = Math.min(startPage + PAGE_LIMIT - 1, totalPages);
+
+  const pages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => startPage + i,
+  );
 
   return (
     <div className="p-4 border-t border-slate-200 flex items-center justify-between text-sm">
-      <TotalText>{totalRows}</TotalText>
+      <TotalText page={page} totalRows={totalRows} />
 
       <div className="flex gap-2 items-center">
         <ButtonControl disabled={page <= 1} onClick={onClickBack}>
           Prev
         </ButtonControl>
-        {Array.from({ length: totalPages }).map((_, i) => (
+        {pages.map((p) => (
           <ButtonPage
-            key={i}
-            isActive={page === i + 1}
-            onClick={() => onClickPage(i + 1)}
+            key={p}
+            isActive={page === p}
+            onClick={() => onClickPage(p)}
           >
-            {i + 1}
+            {p}
           </ButtonPage>
         ))}
 
@@ -79,14 +88,20 @@ const ButtonControl = ({
   />
 );
 
-// const Delimiter = () => (
-//   <div className="w-10 h-10 py-3 bg-white rounded-lg text-center select-none">
-//     ...
-//   </div>
-// );
+export const TotalText = ({
+  totalRows,
+  page,
+}: {
+  totalRows: number;
+  page: number;
+}) => {
+  const limit = 10; // asumsi per page 10 data
+  const start = (page - 1) * limit + 1;
+  const end = Math.min(page * limit, totalRows);
 
-export const TotalText = ({ children }: { children: number }) => (
-  <div className="font-sans font-normal text-sm text-slate-500">
-    Menampilkan 1 hingga {children < 10 ? children : 10} dari {children} data
-  </div>
-);
+  return (
+    <div className="font-sans font-normal text-sm text-slate-500">
+      Menampilkan {start} hingga {end} dari {totalRows} data
+    </div>
+  );
+};
