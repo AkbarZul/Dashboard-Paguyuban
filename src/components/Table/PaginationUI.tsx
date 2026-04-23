@@ -8,7 +8,7 @@ export interface IPagination {
   totalRows?: number;
 }
 
-const PAGE_LIMIT = 5; // 🔥 jumlah page per group
+const PAGE_LIMIT = 5;
 
 const Pagination = ({
   page = 1,
