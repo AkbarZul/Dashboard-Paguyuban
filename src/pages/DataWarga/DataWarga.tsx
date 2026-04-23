@@ -20,6 +20,7 @@ const DataWarga = () => {
     values,
     resetFilters,
     handleChange,
+    setFilterParams,
   } = useDataWarga();
   const { open } = usePopup();
   const tambahWargaProps = useTambahWarga();
@@ -51,14 +52,26 @@ const DataWarga = () => {
         <SearchBar
           placeholder="Cari nama atau blok..."
           value={values.search}
-          onChange={(e) => handleChange("search", e.target.value)}
+          onChange={(e) => {
+            setFilterParams({
+              ...values,
+              search: e.target.value,
+            });
+            handleChange("search", e.target.value);
+          }}
         />
         <InputSelect
           list={filterListStatusHunian}
           layoutClassname="w-[250px]"
           value={values.status}
-          onChange={(value) => handleChange("status", value)}
-          resetFilter={!!values.status}
+          onChange={(value) => {
+            setFilterParams({
+              ...values,
+              status: value,
+            });
+            handleChange("status", value);
+          }}
+          resetFilter={values.status > 0}
           onResetFilter={resetFilters}
           placeholder="Pilih Status Hunian"
         />

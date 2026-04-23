@@ -18,9 +18,8 @@ const useDataWarga = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
-  const { values, handleChange, resetFilters, filterParams } = useFilterChange({
+  const { values, handleChange, resetFilters, filterParams, setFilterParams } = useFilterChange({
     defaultFilters,
-    debounceKeys: ["search"],
   });
 
   const { data } = useQuery({
@@ -85,6 +84,7 @@ const useDataWarga = () => {
     values,
     handleChange,
     resetFilters,
+    setFilterParams
   };
 };
 
