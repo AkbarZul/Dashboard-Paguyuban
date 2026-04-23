@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Dashboard Paguyuban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dashboard Paguyuban adalah sebuah aplikasi web front-end yang dibangun menggunakan ekosistem modern React dan Vite. Aplikasi ini dirancang untuk memudahkan manajemen dan pemantauan data paguyuban, terintegrasi dengan Supabase sebagai arsitektur backend.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Aplikasi ini menggunakan teknologi terbaru dan modern:
 
-## React Compiler
+- **Framework**: [React 19](https://react.dev/) dengan [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite 8](https://vitejs.dev/)
+- **Routing**: [React Router v7](https://reactrouter.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) dengan dukungan utilitas `clsx` & `tailwind-merge`
+- **Backend / Database Service**: [Supabase](https://supabase.com/)
+- **Data Fetching / State Management**: [TanStack React Query v5](https://tanstack.com/query/latest)
+- **Form Handling & Validasi**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- **Icons & UI Notifications**: [Lucide React](https://lucide.dev/) & [React Hot Toast](https://react-hot-toast.com/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 Prasyarat (Prerequisites)
 
-## Expanding the ESLint configuration
+Pastikan sistem Anda sudah terinstal:
+- [Node.js](https://nodejs.org/) (Sangat disarankan memakai versi LTS terbaru)
+- Package manager **Yarn** (Atau bisa memakai `npm` / `pnpm`, proyek ini memakai `yarn.lock`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Instalasi & Menjalankan Proyek Lokal
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi di lingkungan pengembangan lokal:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Clone repository dan masuk ke folder**:
+   ```bash
+   git clone <url-repository>
+   cd dashborad-paguyuban
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Instal dependensi platform**:
+   Jika memakai Yarn:
+   ```bash
+   yarn install
+   ```
+   Atau jika memakai npm:
+   ```bash
+   npm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Konfigurasi Environment Variable (.env)**:
+   Proyek ini menggunakan Supabase. Sesuaikan file `.env` di *root* folder proyek dengan detail kredensial server Anda. Contoh konfigurasi:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. **Jalankan *Development Server***:
+   ```bash
+   yarn dev
+   # atau
+   npm run dev
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+5. **Akses Aplikasi**:
+   Aplikasi dapat diakses melalui browser dengan URL yang ditampilkan pada terminal Anda (biasanya `http://localhost:5173`).
+
+## 📜 Daftar Skrip (Scripts)
+
+Beberapa command yang dapat digunakan di proyek ini:
+
+- `yarn dev`: Menjalankan server pengembangan (*development*) Vite.
+- `yarn build`: Melakukan *checking* tipe TypeScript (`tsc -b`) dan mem-build project untuk siap dipakai (*production*) lewat Vite.
+- `yarn lint`: Menjalankan ESLint untuk mengecek kesalahan kualitas *code style* yang ditetapkan.
+- `yarn preview`: Menjalankan server mini lokal untuk mengecek hasil dari skrip `build` aplikasi sebelum *deployment*.
+
+## 📁 Gambaran Struktur Direktori
+
+- `/src`: Menyimpan logika utama, antarmuka (components, pages), routing, dan integrasi API milik proyek React.
+- `/public`: Berisi aset statis murni yang tidak akan ikut ter-bundle oleh Vite.
+- `vite.config.ts`, `tailwind.config.js`, `tsconfig.json`: Kumpulan konfigurasi penting untuk build system dan styling.
