@@ -1,6 +1,16 @@
 import { LoginPayload } from "@/types/authType";
 import { supabase } from "./supabase";
 
+
+export const authRegistrasi = async ({ email, password }: LoginPayload) => {
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) throw error;
+};
+
 export const authLogin = async ({ email, password }: LoginPayload) => {
   const { error } = await supabase.auth.signInWithPassword({
     email,

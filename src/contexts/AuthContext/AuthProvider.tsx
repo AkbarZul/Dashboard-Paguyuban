@@ -1,7 +1,7 @@
 import { supabase } from "@/services/supabase";
 import { useEffect, useState } from "react";
 import AuthContext, { User } from "./authContext";
-import { authLogin, authLogout } from "@/services/authService";
+import { authLogin, authLogout, authRegistrasi } from "@/services/authService";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -41,6 +41,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  const registrasi = async (email: string, password: string) => {
+    await authRegistrasi({ email, password });
+  };
+
   const login = async (email: string, password: string) => {
     await authLogin({ email, password });
   };
@@ -50,7 +54,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, registrasi, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import { Home, Mail, MapPin, User, Lock } from "lucide-react";
+import { Home, Mail, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import schema, { FormValues } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,16 +7,36 @@ import TextField from "@/components/ReactHookFields/TextField";
 import Button from "@/components/Button";
 import { useNavigate } from "react-router";
 import { LOGIN } from "@/constans/routePaths";
+import { useMutation } from "@tanstack/react-query";
+import { toastError, toastSuccess } from "@/components/Toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Registrasi = () => {
+  const { registrasi } = useAuth();
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", homeNumber: "", email: "", password: "" },
+    defaultValues: { email: "", password: "" },
     mode: "onChange",
   });
   const navigate = useNavigate();
-  const handleRegisSubmit = () => {
-    navigate(LOGIN);
+  const registrasiMutation = useMutation({
+    mutationFn: async (values: FormValues) => {
+      await registrasi(values.email, values.password);
+    },
+    onSuccess: () => {
+      toastSuccess(
+        "Registrasi Berhasil",
+        "Selamat Datang di Website Paguyuban Kav BRI!",
+        "top-right",
+      );
+      navigate(LOGIN);
+    },
+    onError: (err) => {
+      toastError("Login gagal", err.message, "top-right");
+    },
+  });
+  const handleRegisSubmit = (values: FormValues) => {
+    registrasiMutation.mutate(values);
   };
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans relative overflow-hidden">
@@ -38,7 +58,8 @@ const Registrasi = () => {
             onSubmit={handleSubmit(handleRegisSubmit)}
             className="space-y-5"
           >
-            <TextField
+            {/* // TODO will use later */}
+            {/* <TextField
               control={control}
               type="text"
               name="name"
@@ -56,7 +77,7 @@ const Registrasi = () => {
               Icon={<MapPin className="h-5 w-5 text-slate-400" />}
               placeholder="Blok A / 01"
               layoutClassname="w-full"
-            />
+            /> */}
             <TextField
               control={control}
               type="text"
