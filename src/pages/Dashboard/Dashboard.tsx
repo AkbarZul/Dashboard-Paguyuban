@@ -4,7 +4,7 @@ import Table from "@/components/Table";
 import Header from "@/components/Header";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
-import { filterListStatus } from "@/constans/masterdata";
+import { statusPembayaran } from "@/constans/masterdata";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import InputSelect from "@/components/Inputs/InputSelect";
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
       {/* Filter Bar */}
       <TableFilterLayout>
         <SearchBar placeholder="Cari nama warga, blok, atau transaksi..." />
-        <InputSelect list={filterListStatus} layoutClassname="w-[250px]" />
+        <InputSelect list={statusPembayaran} layoutClassname="w-[250px]" />
       </TableFilterLayout>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">

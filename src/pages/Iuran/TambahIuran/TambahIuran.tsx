@@ -5,11 +5,10 @@ import Popup from "@/features/Popup";
 import useTambahIuran from "./useTambahIuran";
 import { usePopup } from "@/contexts/PopupContext";
 import DateField from "@/components/ReactHookFields/DateField";
+import { metodePembayaran, statusPembayaran } from "@/constans/masterdata";
 
 const TambahIuran = ({
-  form,
-  status,
-  metodePembayaran,
+  form
 }: ReturnType<typeof useTambahIuran>) => {
   const { control } = form;
   const { close } = usePopup();
@@ -89,7 +88,7 @@ const TambahIuran = ({
             label="Status Pembayaran"
             placeholder="Isi Status Pembayaran"
             layoutClassname="w-full"
-            list={status}
+            list={statusPembayaran}
           />
         </div>
       </form>

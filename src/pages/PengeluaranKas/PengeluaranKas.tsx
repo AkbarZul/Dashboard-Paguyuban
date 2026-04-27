@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
-import { filterListMonth, filterListStatus } from "@/constans/masterdata";
+import { filterListMonth, statusPembayaran } from "@/constans/masterdata";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import { Download, MinusCircle } from "lucide-react";
 import usePengeluaranKas from "./usePengeluaranKas";
@@ -47,7 +47,7 @@ const PengeluaranKas = () => {
           />
 
           <InputSelect
-            list={filterListStatus}
+            list={statusPembayaran}
             layoutClassname="w-[150px]"
             placeholder="Pilih Status..."
           />

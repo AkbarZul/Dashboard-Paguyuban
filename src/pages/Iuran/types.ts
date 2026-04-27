@@ -1,11 +1,11 @@
 export interface Pemasukan {
   id: number;
-  name: string;
+  nama_warga: string;
   initials: string;
-  block: string;
-  period: string;
-  amount: string;
-  date: string;
-  method: string;
-  status: string;
+  blok_rumah: string;
+  periode_tagihan: string;
+  nominal: string;
+  tanggal_bayar: string;
+  metode_bayar: number;
+  status_pembayaran: number;
 }

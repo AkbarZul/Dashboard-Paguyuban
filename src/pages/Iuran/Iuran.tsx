@@ -3,7 +3,7 @@ import useIuran from "./useIuran";
 import Header from "@/components/Header";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
-import { filterListMonth, filterListStatus } from "@/constans/masterdata";
+import { filterListMonth, statusPembayaran } from "@/constans/masterdata";
 import Table from "@/components/Table";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import Button from "@/components/Button";
@@ -13,9 +13,17 @@ import TambahIuran from "./TambahIuran";
 import useTambahIuran from "./TambahIuran/useTambahIuran";
 
 const Iuran = () => {
-  const { dataPemasukan, columnConfig } = useIuran();
-  const tambahIuranProps = useTambahIuran()
-  const { open } = usePopup()
+  const {
+    dataPemasukan,
+    columnConfig,
+    tablePaginationProps,
+    values,
+    resetFilters,
+    handleChange,
+    setFilterParams,
+  } = useIuran();
+  const tambahIuranProps = useTambahIuran();
+  const { open } = usePopup();
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header Halaman */}
@@ -29,7 +37,10 @@ const Iuran = () => {
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Unduh Laporan</span>
               </Button>
-              <Button onClick={open} className="bg-slate-300 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+              <Button
+                onClick={open}
+                className="bg-slate-300 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
+              >
                 <PlusCircle className="w-5 h-5" />
                 Catat Pembayaran
               </Button>
@@ -40,17 +51,47 @@ const Iuran = () => {
 
       {/* Filter Bar */}
       <TableFilterLayout>
-        <SearchBar placeholder="Cari nama atau blok..." />
+        <SearchBar
+          placeholder="Cari nama atau blok..."
+          value={values.search}
+          onChange={(e) => {
+            setFilterParams({
+              ...values,
+              search: e.target.value,
+            });
+            handleChange("search", e.target.value);
+          }}
+        />
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
           <InputSelect
             list={filterListMonth}
             layoutClassname="w-[150px]"
             placeholder="Pilih Bulan..."
+            value={values.month}
+            onChange={(value) => {
+              setFilterParams({
+                ...values,
+                month: value,
+              });
+              handleChange("month", value);
+            }}
+            resetFilter={values.status > 0}
+            onResetFilter={resetFilters}
           />
 
           <InputSelect
-            list={filterListStatus}
+            list={statusPembayaran}
             layoutClassname="w-[150px]"
+            value={values.status}
+            onChange={(value) => {
+              setFilterParams({
+                ...values,
+                status: value,
+              });
+              handleChange("status", value);
+            }}
+            resetFilter={values.status > 0}
+            onResetFilter={resetFilters}
             placeholder="Pilih Status..."
           />
         </div>
@@ -60,7 +101,14 @@ const Iuran = () => {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
         <TransactionHeader />
         <div className="p-4 md:p-0">
-          <Table columns={columnConfig} data={dataPemasukan} />
+          <Table
+            columns={columnConfig}
+            data={dataPemasukan}
+            tablePaginationProps={{
+              totalPages: tablePaginationProps.totalPages,
+              totalRows: tablePaginationProps.totalRows,
+            }}
+          />
         </div>
       </div>
       <TambahIuran {...tambahIuranProps} />
