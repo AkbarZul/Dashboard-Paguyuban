@@ -7,8 +7,9 @@ import useFilterChange from "@/hooks/useFilterChange";
 import { useQuery } from "@tanstack/react-query";
 import { getIuran } from "@/services/iuranService";
 import { STATUS_TRANSAKSI } from "@/constans/masterdata";
+import { IuranWargaParams } from "@/types/iuranType";
 
-export const defaultFilters = {
+export const defaultFilters: IuranWargaParams = {
   page: 1,
   limit: 10,
   search: "",

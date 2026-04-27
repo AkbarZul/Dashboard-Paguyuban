@@ -1,5 +1,5 @@
 export const filterEmptyValue = (
-  obj: Record<string | number | symbol, unknown>
+  obj: object
 ) =>
   Object.entries(obj)
     .filter(([, value]) => Boolean(value))

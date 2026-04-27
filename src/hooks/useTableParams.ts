@@ -2,7 +2,7 @@ import { filterEmptyValue } from "@/helpers/filterEmptyValue";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router";
 
-function useTableParams<T extends Record<string, string | number>>({
+function useTableParams<T extends object>({
   defaultFilters,
 }: {
   defaultFilters: T;

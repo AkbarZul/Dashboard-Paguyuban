@@ -1,11 +1,11 @@
 import { useState } from "react";
 import useTableParams from "@/hooks/useTableParams";
 
-interface UseFilterChangeProps<T extends Record<string, string | number>> {
+interface UseFilterChangeProps<T extends object> {
   defaultFilters: T;
 }
 
-const useFilterChange = <T extends Record<string, string | number>>({
+const useFilterChange = <T extends object>({
   defaultFilters,
 }: UseFilterChangeProps<T>) => {
   const { filterParams, setFilterParams } = useTableParams({ defaultFilters });

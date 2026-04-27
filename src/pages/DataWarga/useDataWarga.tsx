@@ -5,8 +5,9 @@ import { Column } from "@/components/Table/types";
 import { Warga } from "./types";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
+import { DataWargaParams } from "@/types/dataWargatype";
 
-export const defaultFilters = {
+export const defaultFilters: DataWargaParams = {
   page: 1,
   limit: 10,
   search: "",
