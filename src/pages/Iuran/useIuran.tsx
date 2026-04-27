@@ -41,9 +41,6 @@ const useIuran = () => {
       }),
   });
 
-  console.log(data?.data);
-  
-
   const columnConfig: Column<Pemasukan>[] = [
     {
       header: "Nama Warga",
