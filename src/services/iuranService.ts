@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { IuranWargaParams } from "@/types/iuranType";
+import { IuranWargaParams, IuranWargaPayload } from "@/types/iuranType";
 
 export const getIuran = async ({
   page = 1,
@@ -14,7 +14,9 @@ export const getIuran = async ({
   let query = supabase.from("pemasukan").select("*", { count: "exact" });
 
   if (search) {
-    query = query.or(`nama_warga.ilike.%${search}%,blok_rumah.ilike.%${search}%`);
+    query = query.or(
+      `nama_warga.ilike.%${search}%,blok_rumah.ilike.%${search}%`,
+    );
   }
 
   if (status > 0) {
@@ -37,4 +39,10 @@ export const getIuran = async ({
     total,
     totalPages,
   };
+};
+
+export const createIuran = async (payload: Partial<IuranWargaPayload>) => {
+  const { error } = await supabase.from("pemasukan").insert(payload);
+
+  if (error) throw error;
 };

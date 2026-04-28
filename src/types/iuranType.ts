@@ -5,3 +5,15 @@ export interface IuranWargaParams {
   month?: string;
   status?: number
 }
+
+
+export interface IuranWargaPayload {
+  warga_id: number
+  nama_warga: string;
+  blok_rumah: string;
+  periode_tagihan: string;
+  nominal: string;
+  tanggal_bayar: string;
+  metode_pembayaran: number;
+  status_pembayaran: number
+}
