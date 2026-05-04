@@ -5,4 +5,10 @@ const getOptions = (
   }[],
 ) => (data?.length ? data.map((v) => ({ label: v.nama, value: v.id })) : []);
 
-export { getOptions };
+const addCommas = (num: number | string): string =>
+  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+const formattedNumberToRp = (number: number) =>
+  number ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "-";
+
+export { getOptions, addCommas, formattedNumberToRp };

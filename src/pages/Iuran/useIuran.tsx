@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getIuran } from "@/services/iuranService";
 import { STATUS_TRANSAKSI } from "@/constans/masterdata";
 import { IuranWargaParams } from "@/types/iuranType";
+import { formattedNumberToRp } from "@/helpers/formatter";
 
 export const defaultFilters: IuranWargaParams = {
   page: 1,
@@ -64,7 +65,7 @@ const useIuran = () => {
     {
       header: "Nominal",
       render: (item) => (
-        <span className="font-medium text-slate-800">{item.nominal}</span>
+        <span className="font-medium text-slate-800">{formattedNumberToRp(item.nominal)}</span>
       ),
     },
     {

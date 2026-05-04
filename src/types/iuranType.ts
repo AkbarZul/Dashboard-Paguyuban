@@ -14,6 +14,6 @@ export interface IuranWargaPayload {
   periode_tagihan: string;
   nominal: string;
   tanggal_bayar: string;
-  metode_pembayaran: number;
+  metode_bayar: number;
   status_pembayaran: number
 }

@@ -1,5 +1,5 @@
 export const defaultValues = {
-  name: "",
+  warga_id: 0,
   homeNumber: "",
   periode: "",
   nominal: "",

@@ -22,6 +22,8 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
     return listWarga.find((i) => i.value === id)?.label ?? "";
   };
 
+  const date = new Date().toJSON().slice(0, 10);
+
   const saveIuranMutation = useMutation({
     mutationFn: (payload: IuranWargaPayload) => createIuran(payload),
     onSuccess: async () => {
@@ -36,19 +38,19 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
     },
   });
 
-  const date = new Date()
-
-  const handleSubmitIuran = () => {
+  const handleSubmitIuran = async () => {
     const payload: IuranWargaPayload = {
-      warga_id: getValues('warga_id'),
+      warga_id: getValues("warga_id"),
       nama_warga: mappingName(form.watch("warga_id")),
-      blok_rumah: getValues('homeNumber'),
-      periode_tagihan: getValues('periode'),
-      nominal: getValues('nominal'),
-      tanggal_bayar: date.getDate().toLocaleString(),
-      metode_pembayaran: getValues('metode'),
-      status_pembayaran: getValues('status')
+      blok_rumah: getValues("homeNumber"),
+      periode_tagihan: getValues("periode"),
+      nominal: getValues("nominal"),
+      tanggal_bayar: date,
+      metode_bayar: getValues("metode"),
+      status_pembayaran: getValues("status"),
     };
+
+    await saveIuranMutation.mutate(payload);
   };
 
   return (
@@ -66,14 +68,14 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
           <Button
             type="submit"
             className="px-4 py-2 bg-slate-300 hover:bg-slate-500 text-slate-700 text-sm font-medium rounded-lg"
-            onClick={handleSubmitIuran}
+            onClick={handleSubmit(handleSubmitIuran)}
           >
             Simpan Data
           </Button>
         </>
       }
     >
-      <form id="add-warga-form" className="space-y-4">
+      <form id="add-iuran-form" className="space-y-4">
         <SelectField
           control={control}
           name="warga_id"

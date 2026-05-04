@@ -2,7 +2,6 @@ import { REQUIRED } from "@/constans/errorMessages";
 import { z } from "zod";
 
 const schema = z.object({
-  name: z.string().trim().min(1, REQUIRED).max(255),
   warga_id: z.number().min(1, REQUIRED).max(255),
   homeNumber: z.string().trim().min(1, REQUIRED).max(255),
   periode: z.string().trim().min(1, REQUIRED).max(255),
