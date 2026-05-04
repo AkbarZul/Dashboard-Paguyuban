@@ -20,7 +20,6 @@ const Iuran = () => {
     values,
     resetFilters,
     handleChange,
-    setFilterParams,
   } = useIuran();
   const tambahIuranProps = useTambahIuran();
   const { open } = usePopup();
@@ -55,11 +54,7 @@ const Iuran = () => {
           placeholder="Cari nama atau blok..."
           value={values.search}
           onChange={(e) => {
-            setFilterParams({
-              ...values,
-              search: e.target.value,
-            });
-            handleChange("search", e.target.value);
+            handleChange("search", e.target.value, { debounce: true });
           }}
         />
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
@@ -69,13 +64,9 @@ const Iuran = () => {
             placeholder="Pilih Bulan..."
             value={values.month}
             onChange={(value) => {
-              setFilterParams({
-                ...values,
-                month: value,
-              });
               handleChange("month", value);
             }}
-            resetFilter={values.status > 0}
+            resetFilter={!!values.month}
             onResetFilter={resetFilters}
           />
 
@@ -84,10 +75,6 @@ const Iuran = () => {
             layoutClassname="w-[150px]"
             value={values.status}
             onChange={(value) => {
-              setFilterParams({
-                ...values,
-                status: value,
-              });
               handleChange("status", value);
             }}
             resetFilter={values.status > 0}

@@ -22,7 +22,7 @@ const useIuran = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
-  const { values, handleChange, resetFilters, filterParams, setFilterParams } =
+  const { values, handleChange, resetFilters, filterParams } =
     useFilterChange({
       defaultFilters,
     });
@@ -111,7 +111,6 @@ const useIuran = () => {
     values,
     handleChange,
     resetFilters,
-    setFilterParams,
   };
 };
 
