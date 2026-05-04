@@ -38,14 +38,19 @@ const TambahWarga = ({ form, status }: ReturnType<typeof useTambahWarga>) => {
     };
     await saveWargaMutation.mutate(payload);
   };
+    const handleClose = () => {
+    close();
+    reset();
+  };
   return (
     <Popup
       title="Tambah Data Warga"
+      handleClose={handleClose}
       footer={
         <>
           <Button
             type="button"
-            onClick={close}
+            onClick={handleClose}
             className="px-4 py-2  bg-slate-50 hover:bg-slate-500 text-slate-700text-sm border rounded-lg"
           >
             Batal

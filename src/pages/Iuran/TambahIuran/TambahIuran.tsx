@@ -6,21 +6,32 @@ import useTambahIuran from "./useTambahIuran";
 import { usePopup } from "@/contexts/PopupContext";
 import DateField from "@/components/ReactHookFields/DateField";
 import { metodePembayaran, statusPembayaran } from "@/constans/masterdata";
-import { getOptions } from "@/helpers/formatter";
+import { getOptionsBlock } from "./helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IuranWargaPayload } from "@/types/iuranType";
 import { createIuran } from "@/services/iuranService";
+import { useMemo } from "react";
 
 const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
-  const { control, handleSubmit, getValues, reset } = form;
+  const { control, handleSubmit, getValues, reset, watch, setValue } = form;
   const { close } = usePopup();
   const queryClient = useQueryClient();
 
-  const listWarga = getOptions(data?.data);
+  const listWarga = getOptionsBlock(data?.data);
 
-  const mappingName = (id?: number) => {
-    return listWarga.find((i) => i.value === id)?.label ?? "";
-  };
+  const mappingData = useMemo(() => {
+    const id = watch("warga_id");
+    const list = listWarga.find((i) => i.value === id);
+
+    if (list) {
+      setValue("homeNumber", list?.block);
+    }
+
+    return {
+      name: list?.label,
+      block: list?.block,
+    };
+  }, [listWarga, watch, setValue]);
 
   const date = new Date().toJSON().slice(0, 10);
 
@@ -41,8 +52,8 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
   const handleSubmitIuran = async () => {
     const payload: IuranWargaPayload = {
       warga_id: getValues("warga_id"),
-      nama_warga: mappingName(form.watch("warga_id")),
-      blok_rumah: getValues("homeNumber"),
+      nama_warga: mappingData.name,
+      blok_rumah: mappingData.block,
       periode_tagihan: getValues("periode"),
       nominal: getValues("nominal"),
       tanggal_bayar: date,
@@ -53,14 +64,20 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
     await saveIuranMutation.mutate(payload);
   };
 
+  const handleClose = () => {
+    close();
+    reset();
+  };
+
   return (
     <Popup
       title="Catatan Pembayaran Iuran"
+      handleClose={handleClose}
       footer={
         <>
           <Button
             type="button"
-            onClick={close}
+            onClick={handleClose}
             className="px-4 py-2  bg-slate-50 hover:bg-slate-500 text-slate-700text-sm border rounded-lg"
           >
             Batal
@@ -91,8 +108,9 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
             type="text"
             name="homeNumber"
             label="Blok / Nomor"
-            placeholder="Blok A /01"
+            placeholder="Isi lok rumah"
             layoutClassname="w-full"
+            disabled
           />
 
           <DateField

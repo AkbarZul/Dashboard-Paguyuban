@@ -7,15 +7,17 @@ interface Props {
   children: ReactNode
   footer?: ReactNode
   maxWidth?: string
+  handleClose?: () => void
 }
 
 const Modal = ({
   title,
   children,
   footer,
-  maxWidth = 'max-w-md'
+  maxWidth = 'max-w-md',
+  handleClose
 }: Props) => {
-  const { isOpen, close } = usePopup()
+  const { isOpen } = usePopup()
 
   if (!isOpen) return null
 
@@ -28,7 +30,7 @@ const Modal = ({
         <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
           <h3 className="font-bold text-slate-800">{title}</h3>
           <button
-            onClick={close}
+            onClick={handleClose}
             className="text-slate-400 hover:text-slate-600"
           >
             <X className="w-5 h-5" />
