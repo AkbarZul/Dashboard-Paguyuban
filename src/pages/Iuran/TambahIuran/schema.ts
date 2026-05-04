@@ -5,7 +5,7 @@ const schema = z.object({
   warga_id: z.number().min(1, REQUIRED).max(255),
   homeNumber: z.string().trim().min(1, REQUIRED).max(255),
   periode: z.string().trim().min(1, REQUIRED).max(255),
-  nominal: z.string().trim().min(1, REQUIRED).max(255),
+  nominal: z.number().min(1, REQUIRED),
   metode: z.number().min(1, REQUIRED).max(255),
   status: z.number().min(1, REQUIRED).max(255),
 });

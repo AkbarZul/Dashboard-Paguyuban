@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IuranWargaPayload } from "@/types/iuranType";
 import { createIuran } from "@/services/iuranService";
 import { useMemo } from "react";
+import CurrencyField from "@/components/ReactHookFields/CurrencyField";
 
 const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
   const { control, handleSubmit, getValues, reset, watch, setValue } = form;
@@ -108,7 +109,7 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
             type="text"
             name="homeNumber"
             label="Blok / Nomor"
-            placeholder="Isi lok rumah"
+            placeholder="Isi blok rumah"
             layoutClassname="w-full"
             disabled
           />
@@ -123,9 +124,8 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
           />
         </div>
 
-        <TextField
+        <CurrencyField
           control={control}
-          type="text"
           name="nominal"
           label="Nominal (Rp)"
           placeholder="Isi Nominal"

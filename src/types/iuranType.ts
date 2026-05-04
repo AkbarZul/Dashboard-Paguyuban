@@ -12,7 +12,7 @@ export interface IuranWargaPayload {
   nama_warga: string;
   blok_rumah: string;
   periode_tagihan: string;
-  nominal: string;
+  nominal: number;
   tanggal_bayar: string;
   metode_bayar: number;
   status_pembayaran: number
