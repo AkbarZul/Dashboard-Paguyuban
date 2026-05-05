@@ -1,9 +1,9 @@
 export interface Pengeluaran {
   id: number;
-  date: string;
-  description: string;
-  category: string;
-  recipient: string;
-  amount: string;
+  tanggal: string;
+  keterangan: string;
+  kategori: string;
+  penerima: string;
+  nominal: number;
   proof: "Tersedia" | "Tidak Ada";
 };

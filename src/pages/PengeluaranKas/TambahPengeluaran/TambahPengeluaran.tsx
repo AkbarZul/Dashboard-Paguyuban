@@ -4,10 +4,10 @@ import TextField from "@/components/ReactHookFields/TextField";
 import Popup from "@/features/Popup";
 import useTambahPengeluaran from "./useTambahPengeluaran";
 import { usePopup } from "@/contexts/PopupContext";
+import { pengeluaranKategori } from "@/constans/masterdata";
 
 const TambahPengeluaran = ({
   form,
-  category,
 }: ReturnType<typeof useTambahPengeluaran>) => {
   const { control } = form;
   const { close } = usePopup();
@@ -49,7 +49,7 @@ const TambahPengeluaran = ({
             label="Kategori"
             placeholder="Isi Kategori"
             layoutClassname="w-full"
-            list={category}
+            list={pengeluaranKategori}
           />
 
           <TextField

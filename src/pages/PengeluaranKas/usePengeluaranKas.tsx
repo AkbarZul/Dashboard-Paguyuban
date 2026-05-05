@@ -1,78 +1,62 @@
 import { Column } from "@/components/Table/types";
 import { Pengeluaran } from "./types";
+import { PengeluaranParams } from "@/types/pengeluaranType";
+import { useSearchParams } from "react-router";
+import useFilterChange from "@/hooks/useFilterChange";
+import { useQuery } from "@tanstack/react-query";
+import { getPengeluaran } from "@/services/pengeluaranService";
+import { formattedNumberToRp } from "@/helpers/formatter";
+import { renderPengeluaranKategori } from "@/helpers/chipColor";
+
+export const defaultFilters: PengeluaranParams = {
+  page: 1,
+  limit: 10,
+  search: "",
+  category: 0,
+};
 
 const usePengeluaranKas = () => {
-  const dataPengeluaran: Pengeluaran[] = [
-    {
-      id: 301,
-      date: "23 Okt 2023",
-      description: "Pembayaran Listrik Fasum & Jalan",
-      category: "Listrik Fasum",
-      recipient: "PLN",
-      amount: "Rp 350.000",
-      proof: "Tersedia",
-    },
-    {
-      id: 302,
-      date: "19 Okt 2023",
-      description: "Gaji Bulanan Satpam (Pak Jono)",
-      category: "Operasional Keamanan",
-      recipient: "Jono",
-      amount: "Rp 2.500.000",
-      proof: "Tersedia",
-    },
-    {
-      id: 303,
-      date: "15 Okt 2023",
-      description: "Perbaikan Lampu Taman Blok A",
-      category: "Pemeliharaan",
-      recipient: "Toko Listrik Jaya",
-      amount: "Rp 150.000",
-      proof: "Tersedia",
-    },
-    {
-      id: 304,
-      date: "10 Okt 2023",
-      description: "Konsumsi Rapat Pengurus Paguyuban",
-      category: "Konsumsi",
-      recipient: "Warung Bu Ani",
-      amount: "Rp 200.000",
-      proof: "Tidak Ada",
-    },
-    {
-      id: 305,
-      date: "02 Okt 2023",
-      description: "Iuran Sampah Induk (Kecamatan)",
-      category: "Kebersihan",
-      recipient: "Dinas Kebersihan",
-      amount: "Rp 500.000",
-      proof: "Tersedia",
-    },
-  ];
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") ?? 1);
+
+  const { values, handleChange, resetFilters, filterParams } = useFilterChange({
+    defaultFilters,
+  });
+
+  const { data } = useQuery({
+    queryKey: ["pengeluaran", page, filterParams.search, filterParams.category],
+    queryFn: () =>
+      getPengeluaran({
+        ...filterParams,
+        page,
+      }),
+  });
 
   const columnConfig: Column<Pengeluaran>[] = [
     {
       header: "Tanggal",
-      accessor: "date",
+      accessor: "tanggal",
     },
     {
       header: "Deskripsi",
       render: (item) => (
-        <div className="font-medium text-slate-800">{item.description}</div>
+        <div className="font-medium text-slate-800">{item.keterangan}</div>
       ),
     },
     {
       header: "Kategori",
-      accessor: "category",
+      render: (item) => renderPengeluaranKategori(item.kategori),
     },
     {
       header: "Penerima",
-      accessor: "recipient",
+      accessor: "penerima",
     },
     {
       header: "Nominal",
       render: (item) => (
-        <span className="font-medium text-rose-600">{item.amount}</span>
+        <span className="font-medium text-rose-600">
+          {formattedNumberToRp(item.nominal)}
+        </span>
       ),
     },
     {
@@ -91,8 +75,15 @@ const usePengeluaranKas = () => {
     },
   ];
   return {
-    dataPengeluaran,
+    dataPengeluaran: data?.data ?? [],
     columnConfig,
+    tablePaginationProps: {
+      totalPages: data?.totalPages,
+      totalRows: data?.total,
+    },
+    values,
+    handleChange,
+    resetFilters,
   };
 };
 

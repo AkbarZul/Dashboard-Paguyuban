@@ -1,5 +1,6 @@
 import {
   MAPPING_METODE_PEMBAYARAN,
+  MAPPING_PENGELUARAN_KATEGORI,
   MAPPING_STATUS_TRANSAKSI,
   MAPPING_STATUS_WARGA,
   STATUS_TRANSAKSI,
@@ -42,6 +43,14 @@ export const renderMetodePembayaran = (metode) => {
   return (
     <span className="text-slate-700">
       {MAPPING_METODE_PEMBAYARAN[metode] ?? "-"}
+    </span>
+  );
+};
+
+export const renderPengeluaranKategori = (kategori) => {
+  return (
+    <span className="text-slate-700">
+      {MAPPING_PENGELUARAN_KATEGORI[kategori] ?? "-"}
     </span>
   );
 };
