@@ -3,7 +3,7 @@ import useIuran from "./useIuran";
 import Header from "@/components/Header";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
-import { filterListMonth, statusPembayaran } from "@/constans/masterdata";
+import { statusPembayaran } from "@/constans/masterdata";
 import Table from "@/components/Table";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import Button from "@/components/Button";
@@ -58,21 +58,10 @@ const Iuran = () => {
           }}
         />
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <InputSelect
-            list={filterListMonth}
-            layoutClassname="w-[150px]"
-            placeholder="Pilih Bulan..."
-            value={values.month}
-            onChange={(value) => {
-              handleChange("month", value);
-            }}
-            resetFilter={!!values.month}
-            onResetFilter={resetFilters}
-          />
 
           <InputSelect
             list={statusPembayaran}
-            layoutClassname="w-[150px]"
+            layoutClassname="w-[250px]"
             value={values.status}
             onChange={(value) => {
               handleChange("status", value);

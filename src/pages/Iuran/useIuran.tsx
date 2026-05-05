@@ -14,7 +14,6 @@ export const defaultFilters: IuranWargaParams = {
   page: 1,
   limit: 10,
   search: "",
-  month: "",
   status: 0,
 };
 
@@ -33,7 +32,6 @@ const useIuran = () => {
       page,
       filterParams.search,
       filterParams.status,
-      filterParams.month,
     ],
     queryFn: () =>
       getIuran({

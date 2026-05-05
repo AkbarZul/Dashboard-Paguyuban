@@ -6,7 +6,6 @@ export const getIuran = async ({
   limit = 10,
   search,
   status,
-  month,
 }: IuranWargaParams) => {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
@@ -21,10 +20,6 @@ export const getIuran = async ({
 
   if (status > 0) {
     query = query.eq("status_pembayaran", status);
-  }
-
-  if (month) {
-    query = query.eq("periode_tagihan", month);
   }
 
   const { data, error, count } = await query.range(from, to);
