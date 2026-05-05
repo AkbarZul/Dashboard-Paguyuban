@@ -1,6 +1,6 @@
 export const defaultValues = {
-  information: "",
-  category: 0,
-  recipient: "",
-  nominal: "",
+  keterangan: "",
+  kategori: 0,
+  penerima: "",
+  nominal: 0,
 };

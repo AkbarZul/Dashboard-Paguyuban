@@ -12,6 +12,7 @@ import { IuranWargaPayload } from "@/types/iuranType";
 import { createIuran } from "@/services/iuranService";
 import { useMemo } from "react";
 import CurrencyField from "@/components/ReactHookFields/CurrencyField";
+import { date } from "@/helpers/date";
 
 const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
   const { control, handleSubmit, getValues, reset, watch, setValue } = form;
@@ -33,8 +34,6 @@ const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
       block: list?.block,
     };
   }, [listWarga, watch, setValue]);
-
-  const date = new Date().toJSON().slice(0, 10);
 
   const saveIuranMutation = useMutation({
     mutationFn: (payload: IuranWargaPayload) => createIuran(payload),

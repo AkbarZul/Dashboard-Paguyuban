@@ -1,4 +1,4 @@
-import { PengeluaranParams } from "@/types/pengeluaranType";
+import { PengeluaranParams, PengeluaranPayload } from "@/types/pengeluaranType";
 import { supabase } from "./supabase";
 
 export const getPengeluaran = async ({
@@ -32,4 +32,10 @@ export const getPengeluaran = async ({
     total,
     totalPages,
   };
+};
+
+export const createPengeluaran = async (payload: Partial<PengeluaranPayload>) => {
+  const { error } = await supabase.from("pengeluaran").insert(payload);
+
+  if (error) throw error;
 };
