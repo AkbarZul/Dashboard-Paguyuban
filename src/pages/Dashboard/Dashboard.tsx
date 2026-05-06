@@ -9,7 +9,8 @@ import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
 import InputSelect from "@/components/Inputs/InputSelect";
 
 const Dashboard = () => {
-  const { cardData, transactions, columnConfig } = useDashboard();
+  const { cardData, transactions, columnConfig } =
+    useDashboard();
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header Halaman */}
@@ -41,7 +42,10 @@ const Dashboard = () => {
 
         {/* Table */}
         <div className="p-4 md:p-0">
-          <Table columns={columnConfig} data={transactions} />
+          <Table
+            columns={columnConfig}
+            data={transactions}
+          />
         </div>
       </div>
     </div>

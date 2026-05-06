@@ -1,29 +1,73 @@
 import { Column } from "@/components/Table/types";
-import { renderStatusBadge } from "@/helpers/chipColor";
-import { AlertCircle, Home, Landmark, TrendingUp, Wallet } from "lucide-react";
+import {
+  renderPengeluaranKategori,
+  renderStatusBadge,
+} from "@/helpers/chipColor";
+import { AlertCircle, Home, Landmark, Wallet } from "lucide-react";
 import { Transaction } from "./types";
+import { getDashboard } from "@/services/dashboardService";
+import { useQuery } from "@tanstack/react-query";
+import { formattedNumberToRp } from "@/helpers/formatter";
+import { STATUS_WARGA } from "@/constans/masterdata";
 const useDashboard = () => {
+  const { data } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: () => getDashboard(),
+  });
+
+  const totalPemasukan = (data?.pemasukan ?? []).reduce(
+    (sum, item) => sum + Number(item.nominal),
+    0,
+  );
+  const totalPengeluaran = (data?.pengeluaran ?? []).reduce(
+    (sum, item) => sum + Number(item.nominal),
+    0,
+  );
+  const saldoKas = totalPemasukan - totalPengeluaran;
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  let pemasukanBulanIni = 0;
+
+  const pemasukan = data?.pemasukan ?? [];
+
+  pemasukan.forEach((item) => {
+    const date = item.tanggal_bayar ? new Date(item.tanggal_bayar) : null;
+
+    if (
+      date &&
+      date.getMonth() === currentMonth &&
+      date.getFullYear() === currentYear
+    ) {
+      pemasukanBulanIni += Number(item.nominal);
+    }
+  });
+
+  const warga = data?.warga ?? [];
+
+  const totalWarga = warga.length;
+
+  const wargaTetap = warga.filter(
+    (w) => w.status_hunian === STATUS_WARGA.WARGA_TETAP,
+  ).length;
+
+  const wargaKontrak = warga.filter(
+    (w) => w.status_hunian === STATUS_WARGA.WARGA_KONTRAK,
+  ).length;
+
   const cardData = [
     {
       title: "Total Saldo Kas",
-      value: "Rp 15.450.000",
+      value: formattedNumberToRp(saldoKas),
       icon: (
         <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-brand-600">
           <Landmark className="w-6 h-6" />
         </div>
       ),
-      summary: (
-        <div className="flex items-center text-sm">
-          <span className="text-emerald-500 flex items-center font-medium">
-            <TrendingUp className="w-4 h-4 mr-1" /> +12%
-          </span>
-          <span className="text-slate-400 ml-2">dari bulan lalu</span>
-        </div>
-      ),
     },
     {
       title: "Pemasukan Bulan Ini",
-      value: "Rp 4.200.000",
+      value: formattedNumberToRp(pemasukanBulanIni),
       icon: (
         <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
           <Wallet className="w-6 h-6" />
@@ -58,7 +102,7 @@ const useDashboard = () => {
     },
     {
       title: "Total Warga Aktif",
-      value: "112 KK",
+      value: totalWarga,
       icon: (
         <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600">
           <Home className="w-6 h-6" />
@@ -68,72 +112,14 @@ const useDashboard = () => {
         <div className="flex items-center text-sm gap-3">
           <span className="flex items-center text-slate-500">
             <div className="w-2 h-2 rounded-full bg-emerald-500 mr-1.5" />
-            98 Tetap
+            {wargaTetap} Tetap
           </span>
           <span className="flex items-center text-slate-500">
             <div className="w-2 h-2 rounded-full bg-amber-400 mr-1.5" />
-            14 Kontrak
+            {wargaKontrak} Kontrak
           </span>
         </div>
       ),
-    },
-  ];
-
-  const transactions: Transaction[] = [
-    {
-      id: 1,
-      date: "24 Okt 2023",
-      name: "Ahmad Subarjo",
-      initials: "AS",
-      block: "Blok A / 12",
-      category: "Iuran Bulanan (Okt)",
-      amount: "+ Rp 50.000",
-      type: "in",
-      status: "Lunas",
-    },
-    {
-      id: 2,
-      date: "23 Okt 2023",
-      name: "PLN (Fasum)",
-      initials: "PL",
-      block: "-",
-      category: "Listrik Fasum",
-      amount: "- Rp 350.000",
-      type: "out",
-      status: "Selesai",
-    },
-    {
-      id: 3,
-      date: "22 Okt 2023",
-      name: "Siti Maimunah",
-      initials: "SM",
-      block: "Blok B / 04",
-      category: "Iuran Bulanan (Okt)",
-      amount: "+ Rp 50.000",
-      type: "in",
-      status: "Menunggu Verifikasi",
-    },
-    {
-      id: 4,
-      date: "20 Okt 2023",
-      name: "Dedi Rahman",
-      initials: "DR",
-      block: "Blok C / 10",
-      category: "Sumbangan Kematian",
-      amount: "+ Rp 100.000",
-      type: "in",
-      status: "Lunas",
-    },
-    {
-      id: 5,
-      date: "19 Okt 2023",
-      name: "Gaji Satpam",
-      initials: "GA",
-      block: "-",
-      category: "Operasional Keamanan",
-      amount: "- Rp 2.500.000",
-      type: "out",
-      status: "Selesai",
     },
   ];
 
@@ -165,7 +151,13 @@ const useDashboard = () => {
     },
     {
       header: "Kategori",
-      accessor: "category",
+      render: (trx) => (
+        <>
+          {trx.category === "Iuran Bulanan"
+            ? "Iuran Bulanan"
+            : renderPengeluaranKategori(trx.category)}
+        </>
+      ),
     },
     {
       header: "Nominal",
@@ -179,14 +171,34 @@ const useDashboard = () => {
     },
     {
       header: "Status",
-      render: (trx) => renderStatusBadge(trx.status),
+      render: (trx) => (
+        <>
+          {trx.status === "Selesai" ? (
+            <span className="bg-slate-100 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-full border border-slate-200">
+              Selesai
+            </span>
+          ) : (
+            renderStatusBadge(trx.status)
+          )}
+        </>
+      ),
     },
   ];
 
+  const combined = data?.combined ?? [];
+
+  const datas = combined.sort(
+    (a, b) => b.rawDate.getTime() - a.rawDate.getTime(),
+  );
+
   return {
     cardData,
-    transactions,
+    transactions: datas ?? [],
     columnConfig,
+    tablePaginationProps: {
+      totalPages: datas.length,
+      totalRows: datas.length,
+    },
   };
 };
 

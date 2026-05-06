@@ -7,5 +7,6 @@ export type Transaction = {
   category: string;
   amount: string;
   type: "in" | "out";
-  status: "Lunas" | "Menunggu Verifikasi" | "Selesai";
+  status: "Lunas" | "Menunggu Verifikasi" | "Selesai" | "Menunggak";
+  rawDate: Date
 };
