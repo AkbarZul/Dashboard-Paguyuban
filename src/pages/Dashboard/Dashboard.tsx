@@ -4,13 +4,17 @@ import Table from "@/components/Table";
 import Header from "@/components/Header";
 import TableFilterLayout from "@/features/TableFilterLayout";
 import SearchBar from "@/components/SearchBar";
-import { statusPembayaran } from "@/constans/masterdata";
 import TransactionHeader from "@/features/TransactionHeader/TransactionHeader";
-import InputSelect from "@/components/Inputs/InputSelect";
 
 const Dashboard = () => {
-  const { cardData, transactions, columnConfig } =
-    useDashboard();
+  const {
+    cardData,
+    transactions,
+    columnConfig,
+    tablePaginationProps,
+    values,
+    handleChange,
+  } = useDashboard();
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header Halaman */}
@@ -33,8 +37,13 @@ const Dashboard = () => {
 
       {/* Filter Bar */}
       <TableFilterLayout>
-        <SearchBar placeholder="Cari nama warga, blok, atau transaksi..." />
-        <InputSelect list={statusPembayaran} layoutClassname="w-[250px]" />
+        <SearchBar
+          placeholder="Cari nama warga, blok, atau transaksi..."
+          value={values.search}
+          onChange={(e) => {
+            handleChange("search", e.target.value, { debounce: true });
+          }}
+        />
       </TableFilterLayout>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
@@ -45,6 +54,10 @@ const Dashboard = () => {
           <Table
             columns={columnConfig}
             data={transactions}
+            tablePaginationProps={{
+              totalPages: tablePaginationProps.totalPages,
+              totalRows: tablePaginationProps.totalRows,
+            }}
           />
         </div>
       </div>

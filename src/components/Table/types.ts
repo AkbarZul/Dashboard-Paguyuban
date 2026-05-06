@@ -13,5 +13,5 @@ export interface Column<T extends IData = IData> {
 export interface TableProps<T extends IData = IData> {
   columns: Column<T>[];
   data: T[];
-  tablePaginationProps?: IPagination
+  tablePaginationProps: IPagination
 }

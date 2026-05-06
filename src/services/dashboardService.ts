@@ -1,66 +1,120 @@
-import { formattedNumberToRp } from "@/helpers/formatter";
+import { DashboardParams } from "@/types/dashboardType";
 import { supabase } from "./supabase";
-import { Transaction } from "@/pages/Dashboard/types";
+import { STATUS_TRANSAKSI } from "@/constans/masterdata";
 
-export const getDashboard = async () => {
-  const [resPemasukan, resPengeluaran, resWarga] = await Promise.all([
-    supabase.from("pemasukan").select("*"),
-    supabase.from("pengeluaran").select("*"),
-    supabase.from("warga").select("*"),
-  ]);
+export const getDashboard = async ({
+  page = 1,
+  limit = 10,
+  search,
+}: DashboardParams) => {
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
 
-  const pemasukan = resPemasukan.data || [];
-  const pengeluaran = resPengeluaran.data || [];
-  const warga = resWarga.data || [];
+  let query = supabase.from("dashboard").select("*", { count: "exact" });
 
-  const findBlok = (data: string) => {
-    return warga.find((m) => m.nama === data)?.blok_rumah
+  if (search) {
+    query = query.ilike("name", `%${search}%`);
   }
 
+  query = query.order("date", { ascending: false });
 
-  const combined: Transaction[] = [
-    ...pemasukan.map((p) => ({
-      id: p.id,
-      date: p.tanggal_bayar
-        ? new Date(p.tanggal_bayar).toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })
-        : "-",
-      name: p.nama_warga,
-      category: "Iuran Bulanan",
-      status: p.status_pembayaran as Transaction["status"],
-      block: findBlok(p.nama_warga),
-      amount: `+ Rp ${formattedNumberToRp(p.nominal)}`,
-      type: "in" as const,
-      rawDate: p.tanggal_bayar ? new Date(p.tanggal_bayar) : new Date(p.created_at),
-      initials: p.nama_warga.charAt(0).toUpperCase()
-    })),
-    ...pengeluaran.map((p) => ({
-      id: p.id,
-      date: p.tanggal
-        ? new Date(p.tanggal).toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })
-        : "-",
-      name: p.keterangan,
-      block: "-",
-      category: p.kategori,
-      status: "Selesai" as Transaction["status"],
-      amount: `- Rp ${formattedNumberToRp(p.nominal)}`,
-      type: "out" as const,
-      rawDate: new Date(p.tanggal || p.created_at),
-      initials: p.keterangan.charAt(0).toUpperCase()
-    })),
-  ];
+  const { data, error, count } = await query.range(from, to);
+
+  if (error) throw error;
+
+  const total = count ?? 0;
+  const totalPages = Math.ceil(total / limit);
 
   return {
-    pemasukan,
-    pengeluaran,
-    warga,
-    combined
+    data,
+    total,
+    totalPages,
+  };
+};
+
+export const getDashboardSummary = async () => {
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-based
+  const currentYear = now.getFullYear();
+
+  const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+  const { data, error } = await supabase
+    .from("dashboard")
+    .select("nominal, type, date, status");
+
+  if (error) throw error;
+
+  let totalPemasukan = 0;
+  let totalPengeluaran = 0;
+  let pemasukanBulanIni = 0;
+  let pengeluaranBulanIni = 0;
+  let totalMenunggak = 0;
+
+  let saldoBulanIni = 0;
+  let saldoBulanLalu = 0;
+
+  data?.forEach((item) => {
+    const nominal = Number(item.nominal) || 0;
+    const date = item.date ? new Date(item.date) : null;
+
+    if (!date) return;
+
+    const isThisMonth =
+      date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+
+    const isLastMonth =
+      date.getMonth() === lastMonth && date.getFullYear() === lastMonthYear;
+
+    if (Number(item.status) === STATUS_TRANSAKSI.MENUNGGAK) {
+      totalMenunggak += nominal;
+    }
+
+    if (item.type === "in" && Number(item.status) === STATUS_TRANSAKSI.LUNAS) {
+      totalPemasukan += nominal;
+
+      if (Number(item.status) === STATUS_TRANSAKSI.LUNAS && isThisMonth) {
+        pemasukanBulanIni += nominal;
+      }
+
+      if (isThisMonth) saldoBulanIni += nominal;
+      if (isLastMonth) saldoBulanLalu += nominal;
+    }
+
+    if (item.type === "out") {
+      totalPengeluaran += nominal;
+
+      if (isThisMonth) {
+        pengeluaranBulanIni += nominal;
+      }
+
+      if (isThisMonth) saldoBulanIni -= nominal;
+      if (isLastMonth) saldoBulanLalu -= nominal;
+    }
+  });
+
+
+  const saldoKas = totalPemasukan - totalPengeluaran;
+
+  let growth = 0;
+
+  if (saldoBulanLalu !== 0) {
+    growth = ((saldoBulanIni - saldoBulanLalu) / saldoBulanLalu) * 100;
+  } else {
+    growth = saldoBulanIni > 0 ? 100 : 0;
+  }
+
+  return {
+    totalPemasukan,
+    totalPengeluaran,
+    saldoKas,
+    pemasukanBulanIni,
+    pengeluaranBulanIni,
+    totalMenunggak,
+    saldoBulanIni,
+    saldoBulanLalu,
+    growth,
+    data
   };
 };

@@ -5,7 +5,7 @@ export type Transaction = {
   initials: string;
   block: string;
   category: string;
-  amount: string;
+  nominal: number;
   type: "in" | "out";
   status: "Lunas" | "Menunggu Verifikasi" | "Selesai" | "Menunggak";
   rawDate: Date

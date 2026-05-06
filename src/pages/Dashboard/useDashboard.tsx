@@ -3,47 +3,57 @@ import {
   renderPengeluaranKategori,
   renderStatusBadge,
 } from "@/helpers/chipColor";
-import { AlertCircle, Home, Landmark, Wallet } from "lucide-react";
+import {
+  AlertCircle,
+  Home,
+  Landmark,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
 import { Transaction } from "./types";
-import { getDashboard } from "@/services/dashboardService";
+import { getDashboard, getDashboardSummary } from "@/services/dashboardService";
 import { useQuery } from "@tanstack/react-query";
 import { formattedNumberToRp } from "@/helpers/formatter";
 import { STATUS_WARGA } from "@/constans/masterdata";
+import { getWarga } from "@/services/wargaService";
+import { DashboardParams } from "@/types/dashboardType";
+import { useSearchParams } from "react-router";
+import useFilterChange from "@/hooks/useFilterChange";
+
+export const defaultFilters: DashboardParams = {
+  page: 1,
+  limit: 10,
+  search: "",
+};
+
 const useDashboard = () => {
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") ?? 1);
+
+  const { values, handleChange, resetFilters, filterParams } = useFilterChange({
+    defaultFilters,
+  });
   const { data } = useQuery({
-    queryKey: ["dashboard"],
-    queryFn: () => getDashboard(),
+    queryKey: ["dashboard", page, filterParams.search],
+    queryFn: () =>
+      getDashboard({
+        ...filterParams,
+        page,
+      }),
   });
 
-  const totalPemasukan = (data?.pemasukan ?? []).reduce(
-    (sum, item) => sum + Number(item.nominal),
-    0,
-  );
-  const totalPengeluaran = (data?.pengeluaran ?? []).reduce(
-    (sum, item) => sum + Number(item.nominal),
-    0,
-  );
-  const saldoKas = totalPemasukan - totalPengeluaran;
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-
-  let pemasukanBulanIni = 0;
-
-  const pemasukan = data?.pemasukan ?? [];
-
-  pemasukan.forEach((item) => {
-    const date = item.tanggal_bayar ? new Date(item.tanggal_bayar) : null;
-
-    if (
-      date &&
-      date.getMonth() === currentMonth &&
-      date.getFullYear() === currentYear
-    ) {
-      pemasukanBulanIni += Number(item.nominal);
-    }
+  const { data: summary } = useQuery({
+    queryKey: ["dashboard-summary"],
+    queryFn: getDashboardSummary,
   });
 
-  const warga = data?.warga ?? [];
+  const { data: dataWarga } = useQuery({
+    queryKey: ["warga"],
+    queryFn: () => getWarga({ limit: 100 }),
+  });
+
+  const warga = dataWarga?.data ?? [];
 
   const totalWarga = warga.length;
 
@@ -55,19 +65,45 @@ const useDashboard = () => {
     (w) => w.status_hunian === STATUS_WARGA.WARGA_KONTRAK,
   ).length;
 
+  const isUp = summary?.growth >= 0;
+  const percentage = Math.abs(summary?.growth || 0).toFixed(1);
+
+  const targetBulanIni = wargaTetap * 150000 + wargaKontrak * 100000;
+
+  const progress =
+    targetBulanIni > 0 ? (summary.pemasukanBulanIni / targetBulanIni) * 100 : 0;
+
   const cardData = [
     {
       title: "Total Saldo Kas",
-      value: formattedNumberToRp(saldoKas),
+      value: formattedNumberToRp(summary?.saldoKas),
       icon: (
         <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-brand-600">
           <Landmark className="w-6 h-6" />
         </div>
       ),
+      summary: (
+        <div className="flex items-center text-sm">
+          <span
+            className={`flex items-center font-medium ${
+              isUp ? "text-emerald-500" : "text-rose-500"
+            }`}
+          >
+            {isUp ? (
+              <TrendingUp className="w-4 h-4 mr-1" />
+            ) : (
+              <TrendingDown className="w-4 h-4 mr-1" />
+            )}
+            {isUp ? "+" : "-"}
+            {percentage}%
+          </span>
+          <span className="text-slate-400 ml-2">dari bulan lalu</span>
+        </div>
+      ),
     },
     {
       title: "Pemasukan Bulan Ini",
-      value: formattedNumberToRp(pemasukanBulanIni),
+      value: formattedNumberToRp(summary?.pemasukanBulanIni),
       icon: (
         <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
           <Wallet className="w-6 h-6" />
@@ -78,16 +114,18 @@ const useDashboard = () => {
           <div className="w-full bg-slate-100 rounded-full h-1.5">
             <div
               className="bg-emerald-500 h-1.5 rounded-full"
-              style={{ width: "75%" }}
+              style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <p className="text-xs text-slate-400 mt-2">Target: Rp 5.600.000</p>
+          <p className="text-xs text-slate-400 mt-2">
+            Target: Rp {formattedNumberToRp(targetBulanIni)}
+          </p>
         </div>
       ),
     },
     {
       title: "Tunggakan Warga",
-      value: "Rp 1.400.000",
+      value: `Rp. ${formattedNumberToRp(summary?.totalMenunggak)}`,
       icon: (
         <div className="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
           <AlertCircle className="w-6 h-6" />
@@ -139,7 +177,7 @@ const useDashboard = () => {
                 : "bg-rose-100 text-rose-600"
             }`}
           >
-            {trx.initials}
+            {trx.name.charAt(0).toUpperCase()}
           </div>
           {trx.name}
         </div>
@@ -165,7 +203,7 @@ const useDashboard = () => {
         <span
           className={trx.type === "in" ? "text-emerald-600" : "text-rose-600"}
         >
-          {trx.amount}
+          {formattedNumberToRp(trx.nominal)}
         </span>
       ),
     },
@@ -185,20 +223,17 @@ const useDashboard = () => {
     },
   ];
 
-  const combined = data?.combined ?? [];
-
-  const datas = combined.sort(
-    (a, b) => b.rawDate.getTime() - a.rawDate.getTime(),
-  );
-
   return {
     cardData,
-    transactions: datas ?? [],
+    transactions: data?.data ?? [],
     columnConfig,
     tablePaginationProps: {
-      totalPages: datas.length,
-      totalRows: datas.length,
+      totalPages: data?.totalPages,
+      totalRows: data?.total,
     },
+    values,
+    handleChange,
+    resetFilters,
   };
 };
 

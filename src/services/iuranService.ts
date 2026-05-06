@@ -22,6 +22,8 @@ export const getIuran = async ({
     query = query.eq("status_pembayaran", status);
   }
 
+  query = query.order("tanggal_bayar", { ascending: false });
+
   const { data, error, count } = await query.range(from, to);
 
   if (error) throw error;
