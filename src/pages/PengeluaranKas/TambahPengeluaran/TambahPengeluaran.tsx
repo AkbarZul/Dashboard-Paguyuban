@@ -3,52 +3,16 @@ import SelectField from "@/components/ReactHookFields/SelectField";
 import TextField from "@/components/ReactHookFields/TextField";
 import Popup from "@/features/Popup";
 import useTambahPengeluaran from "./useTambahPengeluaran";
-import { usePopup } from "@/contexts/PopupContext";
 import { pengeluaranKategori } from "@/constans/masterdata";
 import CurrencyField from "@/components/ReactHookFields/CurrencyField";
-import { PengeluaranPayload } from "@/types/pengeluaranType";
-import { createPengeluaran } from "@/services/pengeluaranService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { date } from "@/helpers/date";
 
 const TambahPengeluaran = ({
   form,
+  handleSubmitPengeluaran,
+  handleClose,
 }: ReturnType<typeof useTambahPengeluaran>) => {
-  const { control, handleSubmit, reset, getValues } = form;
-  const { close } = usePopup();
+  const { control, handleSubmit } = form;
 
-  const queryClient = useQueryClient();
-
-  const savePengeluaranMutation = useMutation({
-    mutationFn: (payload: PengeluaranPayload) => createPengeluaran(payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["pengeluaran"],
-      });
-      close();
-      reset();
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const handleSubmitPengeluaran = async () => {
-    const payload: PengeluaranPayload = {
-      tanggal: date,
-      kategori: getValues("kategori"),
-      keterangan: getValues("keterangan"),
-      nominal: getValues("nominal"),
-      penerima: getValues("penerima"),
-    };
-
-    await savePengeluaranMutation.mutate(payload);
-  };
-
-  const handleClose = () => {
-    close();
-    reset();
-  };
   return (
     <Popup
       title="Catatan Pembayaran Iuran"

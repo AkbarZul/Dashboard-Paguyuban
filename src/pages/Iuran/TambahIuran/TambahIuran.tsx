@@ -3,71 +3,19 @@ import SelectField from "@/components/ReactHookFields/SelectField";
 import TextField from "@/components/ReactHookFields/TextField";
 import Popup from "@/features/Popup";
 import useTambahIuran from "./useTambahIuran";
-import { usePopup } from "@/contexts/PopupContext";
+
 import DateField from "@/components/ReactHookFields/DateField";
 import { metodePembayaran, statusPembayaran } from "@/constans/masterdata";
-import { getOptionsBlock } from "./helper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IuranWargaPayload } from "@/types/iuranType";
-import { createIuran } from "@/services/iuranService";
-import { useMemo } from "react";
+
 import CurrencyField from "@/components/ReactHookFields/CurrencyField";
-import { date } from "@/helpers/date";
 
-const TambahIuran = ({ form, data }: ReturnType<typeof useTambahIuran>) => {
-  const { control, handleSubmit, getValues, reset, watch, setValue } = form;
-  const { close } = usePopup();
-  const queryClient = useQueryClient();
-
-  const listWarga = getOptionsBlock(data?.data);
-
-  const mappingData = useMemo(() => {
-    const id = watch("warga_id");
-    const list = listWarga.find((i) => i.value === id);
-
-    if (list) {
-      setValue("homeNumber", list?.block);
-    }
-
-    return {
-      name: list?.label,
-      block: list?.block,
-    };
-  }, [listWarga, watch, setValue]);
-
-  const saveIuranMutation = useMutation({
-    mutationFn: (payload: IuranWargaPayload) => createIuran(payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["iuran"],
-      });
-      close();
-      reset();
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const handleSubmitIuran = async () => {
-    const payload: IuranWargaPayload = {
-      warga_id: getValues("warga_id"),
-      nama_warga: mappingData.name,
-      blok_rumah: mappingData.block,
-      periode_tagihan: getValues("periode"),
-      nominal: getValues("nominal"),
-      tanggal_bayar: date,
-      metode_bayar: getValues("metode"),
-      status_pembayaran: getValues("status"),
-    };
-
-    await saveIuranMutation.mutate(payload);
-  };
-
-  const handleClose = () => {
-    close();
-    reset();
-  };
+const TambahIuran = ({
+  form,
+  handleSubmitIuran,
+  handleClose,
+  listWarga,
+}: ReturnType<typeof useTambahIuran>) => {
+  const { control, handleSubmit } = form;
 
   return (
     <Popup

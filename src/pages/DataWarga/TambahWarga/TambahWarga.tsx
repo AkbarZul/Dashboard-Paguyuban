@@ -1,47 +1,18 @@
 import Button from "@/components/Button";
-import { usePopup } from "@/contexts/PopupContext";
 import Popup from "@/features/Popup";
 import useTambahWarga from "./useTambahWarga";
 import TextField from "@/components/ReactHookFields/TextField";
 import SelectField from "@/components/ReactHookFields/SelectField";
 import DateField from "@/components/ReactHookFields/DateField";
-import { createWarga } from "@/services/wargaService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DataWargaPayload } from "@/types/dataWargatype";
+import { filterListStatusHunian as status } from "@/constans/masterdata";
 
-const TambahWarga = ({ form, status }: ReturnType<typeof useTambahWarga>) => {
-  const { control, handleSubmit, getValues, reset } = form;
-  const { close } = usePopup();
-  const queryClient = useQueryClient();
+const TambahWarga = ({
+  form,
+  handleSubmitWarga,
+  handleClose,
+}: ReturnType<typeof useTambahWarga>) => {
+  const { control, handleSubmit } = form;
 
-  const saveWargaMutation = useMutation({
-    mutationFn: (payload: DataWargaPayload) => createWarga(payload),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["warga"],
-      });
-      close()
-      reset()
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-  const handleSubmitWarga = async () => {
-    const payload = {
-      nama: getValues("name"),
-      blok_rumah: getValues("homeNumber"),
-      status_hunian: getValues("status"),
-      no_hp: getValues("phoneNumber"),
-      tanggal_bergabung: getValues("joinDate"),
-      initials: getValues("initials"),
-    };
-    await saveWargaMutation.mutate(payload);
-  };
-    const handleClose = () => {
-    close();
-    reset();
-  };
   return (
     <Popup
       title="Tambah Data Warga"
