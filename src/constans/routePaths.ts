@@ -1,8 +1,9 @@
-export const DASHBOARD = '/dashboard'
-export const IURAN = '/iuran'
-export const DATA_WARGA = '/data-warga'
-export const PENGELUARAN_KAS = '/pengeluaran-kas'
-export const LAPORAN_KEUANGAN = '/laporan-keuangan'
-export const PENGATURAN = '/pengaturan'
-export const LOGIN = '/login'
-export const REGISTRASI = '/registrasi'
+export const ROOT = "/";
+export const DASHBOARD = "/dashboard";
+export const IURAN = "/iuran";
+export const DATA_WARGA = "/data-warga";
+export const PENGELUARAN_KAS = "/pengeluaran-kas";
+export const LAPORAN_KEUANGAN = "/laporan-keuangan";
+export const PENGATURAN = "/pengaturan";
+export const LOGIN = "/login";
+export const REGISTRASI = "/registrasi";

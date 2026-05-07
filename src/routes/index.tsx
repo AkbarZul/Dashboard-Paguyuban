@@ -7,7 +7,6 @@ import LaporanKeuangan from "@/pages/LaporanKeuangan";
 import Pengaturan from "@/pages/Pengaturan";
 import Login from "@/pages/Login";
 import Registrasi from "@/pages/Registrasi";
-import { Navigate } from "react-router";
 
 export const routes = [
   {
@@ -37,10 +36,6 @@ export const routes = [
 ];
 
 export const publicRoutes = [
-  {
-    path: "/",
-    element: <Navigate to={PATH.LOGIN} replace />,
-  },
   {
     path: PATH.LOGIN,
     element: <Login />,

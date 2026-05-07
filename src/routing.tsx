@@ -8,11 +8,16 @@ import { routes, publicRoutes } from "./routes";
 import { DashboardLayout } from "@/components/Layout";
 import { useAuth } from "./contexts/AuthContext";
 import Loading from "./components/Loading";
+import * as PATH from "@/constans/routePaths";
+
 const Routing = () => {
   const router = createBrowserRouter([
-    ...publicRoutes,
     {
-      element: <ProtectedRoute />,
+      element: <AuthRoute />,
+      children: publicRoutes,
+    },
+    {
+      element: <AuthRoute isProtected />,
       children: [
         {
           element: <DashboardLayout />,
@@ -29,12 +34,22 @@ const Routing = () => {
 
 export default Routing;
 
-const ProtectedRoute = () => {
+interface AuthRouteProps {
+  isProtected?: boolean;
+}
+
+const AuthRoute = ({ isProtected = false }: AuthRouteProps) => {
   const { user, loading } = useAuth();
 
   if (loading) return <Loading fullScreen />;
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (isProtected && !user) {
+    return <Navigate to={PATH.LOGIN} replace />;
+  }
+
+  if (!isProtected && user) {
+    return <Navigate to={PATH.DASHBOARD} replace />;
+  }
 
   return <Outlet />;
 };
