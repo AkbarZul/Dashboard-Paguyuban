@@ -6,6 +6,9 @@ import { Warga } from "./types";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
 import { DataWargaParams } from "@/types/dataWargatype";
+import Button from "@/components/Button";
+import { usePopup } from "@/contexts/PopupContext";
+import { useState } from "react";
 
 export const defaultFilters: DataWargaParams = {
   page: 1,
@@ -18,6 +21,9 @@ export const defaultFilters: DataWargaParams = {
 const useDataWarga = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
+  const { open } = usePopup();
+
+  const [id, setId] = useState<number>();
 
   const { values, handleChange, resetFilters, filterParams } = useFilterChange({
     defaultFilters,
@@ -31,6 +37,16 @@ const useDataWarga = () => {
         page,
       }),
   });
+
+    const handleTambah = () => {
+    setId(undefined);
+    open();
+  };
+
+  const handleOpenModal = (id: number) => {
+    setId(id);
+    open();
+  };
 
   const columnConfig: Column<Warga>[] = [
     {
@@ -63,14 +79,17 @@ const useDataWarga = () => {
     {
       header: "Aksi",
       className: "text-center",
-      render: () => (
+      render: (item) => (
         <div className="flex items-center gap-2">
-          <button className="p-1 text-blue-600 hover:bg-blue-50 rounded">
+          <Button
+            className="p-2 text-blue-600 bg-blue-100 font-bold border hover:bg-blue-50 rounded-xl w-16"
+            onClick={() => handleOpenModal(item.id)}
+          >
             Edit
-          </button>
-          <button className="p-1 text-rose-600 hover:bg-rose-50 rounded">
+          </Button>
+          <Button className="p-2 text-rose-600 bg-rose-100 font-bold hover:bg-rose-50 rounded-xl w-16">
             Hapus
-          </button>
+          </Button>
         </div>
       ),
     },
@@ -85,6 +104,9 @@ const useDataWarga = () => {
     values,
     handleChange,
     resetFilters,
+    handleTambah,
+    id,
+    setId
   };
 };
 

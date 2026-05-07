@@ -25,9 +25,9 @@ export const KATEGORI_PENGELUARAN = {
 };
 
 export const TYPE = {
-  IN: 'in',
-  OUT: 'out'
-}
+  IN: "in",
+  OUT: "out",
+};
 
 export const MAPPING_STATUS_WARGA = {
   [STATUS_WARGA.WARGA_TETAP]: "Warga Tetap",
@@ -136,7 +136,7 @@ export const filterListBlok = [
 
 export const filterListStatusHunian = [
   {
-    label: MAPPING_STATUS_WARGA[STATUS_WARGA.WARGA_KONTRAK],
+    label: MAPPING_STATUS_WARGA[STATUS_WARGA.WARGA_TETAP],
     value: STATUS_WARGA.WARGA_TETAP,
   },
   {
