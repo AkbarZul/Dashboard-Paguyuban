@@ -20,6 +20,7 @@ import { getWarga } from "@/services/wargaService";
 import { DashboardParams } from "@/types/dashboardType";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
+import { getIuran } from "@/services/iuranService";
 
 export const defaultFilters: DashboardParams = {
   page: 1,
@@ -34,6 +35,7 @@ const useDashboard = () => {
   const { values, handleChange, resetFilters, filterParams } = useFilterChange({
     defaultFilters,
   });
+
   const { data } = useQuery({
     queryKey: ["dashboard", page, filterParams.search],
     queryFn: () =>
@@ -51,6 +53,11 @@ const useDashboard = () => {
   const { data: dataWarga } = useQuery({
     queryKey: ["warga"],
     queryFn: () => getWarga({ limit: 100 }),
+  });
+
+  const { data: dataIuran } = useQuery({
+    queryKey: ["iuran"],
+    queryFn: () => getIuran({ limit: 100 }),
   });
 
   const warga = dataWarga?.data ?? [];
@@ -71,7 +78,39 @@ const useDashboard = () => {
   const targetBulanIni = wargaTetap * 150000 + wargaKontrak * 100000;
 
   const progress =
-    targetBulanIni > 0 ? (summary.pemasukanBulanIni / targetBulanIni) * 100 : 0;
+    targetBulanIni > 0
+      ? (summary?.pemasukanBulanIni / targetBulanIni) * 100
+      : 0;
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  const iuranBulanIni = dataIuran?.data?.filter((item) => {
+    const date = item.tanggal_bayar ? new Date(item.tanggal_bayar) : null;
+
+    return (
+      date &&
+      date.getMonth() === currentMonth &&
+      date.getFullYear() === currentYear
+    );
+  });
+
+  const wargaSudahBayar = new Set(iuranBulanIni?.map((i) => i.warga_id));
+
+  const wargaMenunggak = warga.filter((w) => !wargaSudahBayar.has(w.id));
+
+  const totalWargaMenunggakBulanIni = wargaMenunggak.reduce((sum, warga) => {
+    if (warga.status_hunian === STATUS_WARGA.WARGA_TETAP) {
+      return sum + 150000;
+    }
+
+    if (warga.status_hunian === STATUS_WARGA.WARGA_KONTRAK) {
+      return sum + 100000;
+    }
+
+    return sum;
+  }, 0);
 
   const cardData = [
     {
@@ -125,7 +164,7 @@ const useDashboard = () => {
     },
     {
       title: "Tunggakan Warga",
-      value: `Rp. ${formattedNumberToRp(summary?.totalMenunggak)}`,
+      value: `Rp. ${formattedNumberToRp(totalWargaMenunggakBulanIni)}`,
       icon: (
         <div className="w-12 h-12 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
           <AlertCircle className="w-6 h-6" />
@@ -133,7 +172,9 @@ const useDashboard = () => {
       ),
       summary: (
         <div className="flex items-center text-sm">
-          <span className="text-slate-500 font-medium">25 KK</span>
+          <span className="text-slate-500 font-medium">
+            {wargaMenunggak?.length} warga
+          </span>
           <span className="text-slate-400 ml-1">belum lunas bulan ini</span>
         </div>
       ),

@@ -24,6 +24,11 @@ export const KATEGORI_PENGELUARAN = {
   LAIN_LAIN: 6,
 };
 
+export const TYPE = {
+  IN: 'in',
+  OUT: 'out'
+}
+
 export const MAPPING_STATUS_WARGA = {
   [STATUS_WARGA.WARGA_TETAP]: "Warga Tetap",
   [STATUS_WARGA.WARGA_KONTRAK]: "Warga Kontrak",

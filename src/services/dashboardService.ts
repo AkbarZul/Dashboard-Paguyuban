@@ -1,6 +1,6 @@
 import { DashboardParams } from "@/types/dashboardType";
 import { supabase } from "./supabase";
-import { STATUS_TRANSAKSI } from "@/constans/masterdata";
+import { STATUS_TRANSAKSI, TYPE } from "@/constans/masterdata";
 
 export const getDashboard = async ({
   page = 1,
@@ -34,7 +34,7 @@ export const getDashboard = async ({
 
 export const getDashboardSummary = async () => {
   const now = new Date();
-  const currentMonth = now.getMonth(); // 0-based
+  const currentMonth = now.getMonth(); 
   const currentYear = now.getFullYear();
 
   const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -71,10 +71,10 @@ export const getDashboardSummary = async () => {
       totalMenunggak += nominal;
     }
 
-    if (item.type === "in" && Number(item.status) === STATUS_TRANSAKSI.LUNAS) {
+    if (item.type === TYPE.IN && Number(item.status) === STATUS_TRANSAKSI.LUNAS) {
       totalPemasukan += nominal;
 
-      if (Number(item.status) === STATUS_TRANSAKSI.LUNAS && isThisMonth) {
+      if (isThisMonth) {
         pemasukanBulanIni += nominal;
       }
 
@@ -82,7 +82,7 @@ export const getDashboardSummary = async () => {
       if (isLastMonth) saldoBulanLalu += nominal;
     }
 
-    if (item.type === "out") {
+    if (item.type === TYPE.OUT) {
       totalPengeluaran += nominal;
 
       if (isThisMonth) {
