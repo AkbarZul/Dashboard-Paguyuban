@@ -38,7 +38,7 @@ const Dashboard = () => {
       {/* Filter Bar */}
       <TableFilterLayout>
         <SearchBar
-          placeholder="Cari nama warga, blok, atau transaksi..."
+          placeholder="Cari nama warga atau keterangan"
           value={values.search}
           onChange={(e) => {
             handleChange("search", e.target.value, { debounce: true });
