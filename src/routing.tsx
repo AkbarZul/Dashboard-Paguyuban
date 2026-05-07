@@ -4,7 +4,7 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router";
-import { routes, publicRoutes } from "./routes";
+import { routes, usePublicRoutes } from "./routes";
 import { DashboardLayout } from "@/components/Layout";
 import { useAuth } from "./contexts/AuthContext";
 import Loading from "./components/Loading";
@@ -14,7 +14,7 @@ const Routing = () => {
   const router = createBrowserRouter([
     {
       element: <AuthRoute />,
-      children: publicRoutes,
+      children: usePublicRoutes(),
     },
     {
       element: <AuthRoute isProtected />,

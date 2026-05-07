@@ -7,6 +7,8 @@ import LaporanKeuangan from "@/pages/LaporanKeuangan";
 import Pengaturan from "@/pages/Pengaturan";
 import Login from "@/pages/Login";
 import Registrasi from "@/pages/Registrasi";
+import { Navigate } from "react-router";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const routes = [
   {
@@ -35,13 +37,24 @@ export const routes = [
   },
 ];
 
-export const publicRoutes = [
-  {
-    path: PATH.LOGIN,
-    element: <Login />,
-  },
-  {
-    path: PATH.REGISTRASI,
-    element: <Registrasi />,
-  },
-];
+export const usePublicRoutes = () => {
+  const { user } = useAuth();
+  return [
+    {
+      path: PATH.ROOT,
+      element: user ? (
+        <Navigate to={PATH.DASHBOARD} replace />
+      ) : (
+        <Navigate to={PATH.LOGIN} replace />
+      ),
+    },
+    {
+      path: PATH.LOGIN,
+      element: <Login />,
+    },
+    {
+      path: PATH.REGISTRASI,
+      element: <Registrasi />,
+    },
+  ];
+};
