@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
@@ -8,7 +9,8 @@
     },
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "target": "ESNext"
+    "target": "ESNext",
+    "noEmit": true 
   },
   "include": ["src"]
 }
