@@ -5,11 +5,12 @@ import { CheckCircle2, MoreVertical } from "lucide-react";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
 import { useQuery } from "@tanstack/react-query";
-import { getIuran } from "@/services/iuranService";
+import { getAllIuran, getIuran } from "@/services/iuranService";
 import { STATUS_TRANSAKSI } from "@/constans/masterdata";
 import { IuranWargaParams } from "@/types/iuranType";
 import { formattedNumberToRp } from "@/helpers/formatter";
 import { formatDate, formatDateMonth } from "@/helpers/date";
+import { exportIuranToExcel } from "@/helpers/exportIuran";
 
 export const defaultFilters: IuranWargaParams = {
   page: 1,
@@ -34,6 +35,12 @@ const useIuran = () => {
         page,
       }),
   });
+
+  const handleDownload = async () => {
+    const data = await getAllIuran();
+
+    exportIuranToExcel(data);
+  };
 
   const columnConfig: Column<Pemasukan>[] = [
     {
@@ -106,6 +113,7 @@ const useIuran = () => {
     values,
     handleChange,
     resetFilters,
+    handleDownload
   };
 };
 
