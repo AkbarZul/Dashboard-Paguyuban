@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPengeluaran } from "@/services/pengeluaranService";
 import { formattedNumberToRp } from "@/helpers/formatter";
 import { renderPengeluaranKategori } from "@/helpers/chipColor";
+import { formatDate } from "@/helpers/date";
 
 export const defaultFilters: PengeluaranParams = {
   page: 1,
@@ -35,7 +36,7 @@ const usePengeluaranKas = () => {
   const columnConfig: Column<Pengeluaran>[] = [
     {
       header: "Tanggal",
-      accessor: "tanggal",
+      render: (item) => formatDate(item.tanggal),
     },
     {
       header: "Deskripsi",

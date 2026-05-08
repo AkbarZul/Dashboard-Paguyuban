@@ -9,6 +9,7 @@ import { getIuran } from "@/services/iuranService";
 import { STATUS_TRANSAKSI } from "@/constans/masterdata";
 import { IuranWargaParams } from "@/types/iuranType";
 import { formattedNumberToRp } from "@/helpers/formatter";
+import { formatDate, formatDateMonth } from "@/helpers/date";
 
 export const defaultFilters: IuranWargaParams = {
   page: 1,
@@ -21,18 +22,12 @@ const useIuran = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
 
-  const { values, handleChange, resetFilters, filterParams } =
-    useFilterChange({
-      defaultFilters,
-    });
+  const { values, handleChange, resetFilters, filterParams } = useFilterChange({
+    defaultFilters,
+  });
 
   const { data } = useQuery({
-    queryKey: [
-      "iuran",
-      page,
-      filterParams.search,
-      filterParams.status,
-    ],
+    queryKey: ["iuran", page, filterParams.search, filterParams.status],
     queryFn: () =>
       getIuran({
         ...filterParams,
@@ -58,21 +53,23 @@ const useIuran = () => {
     },
     {
       header: "Periode Tagihan",
-      accessor: "periode_tagihan",
+      render: (item) => formatDateMonth(item.periode_tagihan),
     },
     {
       header: "Nominal",
       render: (item) => (
-        <span className="font-medium text-slate-800">{formattedNumberToRp(item.nominal)}</span>
+        <span className="font-medium text-slate-800">
+          {formattedNumberToRp(item.nominal)}
+        </span>
       ),
     },
     {
       header: "Tgl Bayar",
-      accessor: "tanggal_bayar",
+      render: (item) => formatDate(item.tanggal_bayar),
     },
     {
       header: "Metode",
-      render: (item) => renderMetodePembayaran(item.metode_bayar)
+      render: (item) => renderMetodePembayaran(item.metode_bayar),
     },
     {
       header: "Status",

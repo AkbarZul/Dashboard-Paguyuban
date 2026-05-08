@@ -9,6 +9,7 @@ import { DataWargaParams } from "@/types/dataWargatype";
 import Button from "@/components/Button";
 import { usePopup } from "@/contexts/PopupContext";
 import { useState } from "react";
+import { formatDate } from "@/helpers/date";
 
 export const defaultFilters: DataWargaParams = {
   page: 1,
@@ -74,7 +75,7 @@ const useDataWarga = () => {
     },
     {
       header: "Tanggal Bergabung",
-      accessor: "tanggal_bergabung",
+      render: (item) => formatDate(item.tanggal_bergabung),
     },
     {
       header: "Aksi",

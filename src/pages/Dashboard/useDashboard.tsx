@@ -21,6 +21,7 @@ import { DashboardParams } from "@/types/dashboardType";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
 import { getIuran } from "@/services/iuranService";
+import { formatDate } from "@/helpers/date";
 
 export const defaultFilters: DashboardParams = {
   page: 1,
@@ -205,7 +206,7 @@ const useDashboard = () => {
   const columnConfig: Column<Transaction>[] = [
     {
       header: "Tanggal",
-      accessor: "date",
+      render: (item) => formatDate(item.date),
     },
     {
       header: "Nama Warga / Keterangan",
