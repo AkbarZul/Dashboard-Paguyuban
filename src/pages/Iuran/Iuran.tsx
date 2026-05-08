@@ -20,6 +20,7 @@ const Iuran = () => {
     values,
     resetFilters,
     handleChange,
+    handleDownload,
   } = useIuran();
   const tambahIuranProps = useTambahIuran();
   const { open } = usePopup();
@@ -32,7 +33,10 @@ const Iuran = () => {
         actionButton={
           <div>
             <div className="flex items-center gap-3">
-              <Button className="bg-white border border-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+              <Button
+                className="bg-white border border-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
+                onClick={handleDownload}
+              >
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Unduh Laporan</span>
               </Button>
@@ -58,7 +62,6 @@ const Iuran = () => {
           }}
         />
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-
           <InputSelect
             list={statusPembayaran}
             layoutClassname="w-[250px]"

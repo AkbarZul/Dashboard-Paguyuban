@@ -43,3 +43,14 @@ export const createIuran = async (payload: Partial<IuranWargaPayload>) => {
 
   if (error) throw error;
 };
+
+export const getAllIuran = async () => {
+  const { data, error } = await supabase
+    .from("pemasukan")
+    .select("*")
+    .order("tanggal_bayar", { ascending: false });
+
+  if (error) throw error;
+
+  return data;
+};
