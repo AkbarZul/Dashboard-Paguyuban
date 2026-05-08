@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import { formatDate, formatDateMonth } from "./date";
 import { formattedNumberToRp } from "./formatter";
 import { Pemasukan } from "@/pages/Iuran/types";
+import { Pengeluaran } from "@/pages/PengeluaranKas/types";
 
 
 export const exportIuranToExcel = (data: Pemasukan[]) => {
@@ -30,4 +31,31 @@ export const exportIuranToExcel = (data: Pemasukan[]) => {
   });
 
   saveAs(file, "laporan-iuran.xlsx");
+};
+
+
+export const exportPengeluaranToExcel = (data: Pengeluaran[]) => {
+  const formatted = data.map((item) => ({
+    "Tanggal": formatDate(item.tanggal),
+    "Deskripsi": item.keterangan,
+    "Penerima": item.penerima,
+    "Nominal": formattedNumberToRp(item.nominal),
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(formatted);
+
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Data Pengeluaran");
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
+
+  const file = new Blob([excelBuffer], {
+    type: "application/octet-stream",
+  });
+
+  saveAs(file, "laporan-pengeluaran.xlsx");
 };

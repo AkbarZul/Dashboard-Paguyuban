@@ -39,3 +39,14 @@ export const createPengeluaran = async (payload: Partial<PengeluaranPayload>) =>
 
   if (error) throw error;
 };
+
+export const getAllPengeluaran = async () => {
+  const { data, error } = await supabase
+    .from("pengeluaran")
+    .select("*")
+    .order("tanggal", { ascending: false });
+
+  if (error) throw error;
+
+  return data;
+};

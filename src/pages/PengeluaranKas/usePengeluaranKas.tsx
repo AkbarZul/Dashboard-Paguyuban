@@ -4,10 +4,11 @@ import { PengeluaranParams } from "@/types/pengeluaranType";
 import { useSearchParams } from "react-router";
 import useFilterChange from "@/hooks/useFilterChange";
 import { useQuery } from "@tanstack/react-query";
-import { getPengeluaran } from "@/services/pengeluaranService";
+import { getAllPengeluaran, getPengeluaran } from "@/services/pengeluaranService";
 import { formattedNumberToRp } from "@/helpers/formatter";
 import { renderPengeluaranKategori } from "@/helpers/chipColor";
 import { formatDate } from "@/helpers/date";
+import { exportPengeluaranToExcel } from "@/helpers/export";
 
 export const defaultFilters: PengeluaranParams = {
   page: 1,
@@ -32,6 +33,12 @@ const usePengeluaranKas = () => {
         page,
       }),
   });
+
+    const handleDownload = async () => {
+      const data = await getAllPengeluaran();
+  
+      exportPengeluaranToExcel(data);
+    };
 
   const columnConfig: Column<Pengeluaran>[] = [
     {
@@ -85,6 +92,7 @@ const usePengeluaranKas = () => {
     values,
     handleChange,
     resetFilters,
+    handleDownload
   };
 };
 

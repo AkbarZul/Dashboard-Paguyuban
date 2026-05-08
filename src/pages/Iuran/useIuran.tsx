@@ -10,7 +10,7 @@ import { STATUS_TRANSAKSI } from "@/constans/masterdata";
 import { IuranWargaParams } from "@/types/iuranType";
 import { formattedNumberToRp } from "@/helpers/formatter";
 import { formatDate, formatDateMonth } from "@/helpers/date";
-import { exportIuranToExcel } from "@/helpers/exportIuran";
+import { exportIuranToExcel } from "@/helpers/export";
 
 export const defaultFilters: IuranWargaParams = {
   page: 1,

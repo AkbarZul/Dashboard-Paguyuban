@@ -82,8 +82,6 @@ const useTambahWarga = ({ id, setId }: Props) => {
     reset(defaultValues);
   };
 
-  console.log(id, "ini");
-
   return {
     form: { control, ...form },
     handleSubmitWarga,
